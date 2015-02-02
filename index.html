@@ -44,7 +44,7 @@ function createDirectory(people){
 		console.log("run loop");
 
 		var bio = people[i].gsx$bio.$t;
-		var email = people[i].gsx$email.$t;
+
 		var ggj14 = people[i].gsx$ggj14.$t;
 		var ggj15 = people[i].gsx$ggj15.$t;
 		var github = people[i].gsx$github.$t;
@@ -62,31 +62,27 @@ function createDirectory(people){
 		var website = people[i].gsx$website.$t;
 
 
-		$('.page').append("<div class='person'>"  +
-		"<img src='http://gravatar.com/avatar/" + calcMD5(email) + "'></img>" +
-
-		addName(people[i])
-		+ "<p><strong>Studio:</strong> " + studio + "</p>" + 
-		"<strong>Bio:</strong> " + bio + "</p>" + 
-		
-		"<p><strong>Projects:</strong> " + projects + "</p>" + 
-		"<p><strong>Seeking:</strong> " + seeking + "</p>" + 
-		"<p><strong>Skills:</strong> " + skills + "</p>" + 
-		
-		"<p><strong>Email:</strong> " + email + "</p>" + 
-		"<p><strong>Website:</strong> " + "<a href='" + website + "' target='_blank'>"+ website + "</a>"+ "</p>" +
-		"<p><strong>Twitter:</strong> " + "<a href='" + twitter + "' target='_blank'>"+ twitter + "</a>"+ "</p>" +
-		"<p><strong>Github:</strong> " + "<a href='" + github + "' target='_blank'>"+ github + "</a>"+ "</p>" +
-		"<p><strong>Tumblr:</strong> " + "<a href='" + tumblr + "' target='_blank'>"+ tumblr + "</a>"+ "</p>" +
-		"<p><strong>G+:</strong> " + "<a href='" + googleplus + "' target='_blank'>"+ googleplus + "</a>"+ "</p>" +
-		"<p><strong>Steam:</strong> " + steam + "</p>" + 
+		$('.page').append("<div class='person'>"  
+			+ addGravitar(people[i]) 
+			+ addName(people[i])
+			+ "<p><strong>Studio:</strong> " + studio + "</p>" 
+			+ "<strong>Bio:</strong> " + bio + "</p>" 
+			+ "<p><strong>Projects:</strong> " + projects + "</p>" 
+			+ "<p><strong>Seeking:</strong> " + seeking + "</p>" 
+			+ "<p><strong>Skills:</strong> " + skills + "</p>" 
+			+ "<p><strong>Website:</strong> " + "<a href='" + website + "' target='_blank'>"+ website + "</a>"+ "</p>"
+			+ "<p><strong>Twitter:</strong> " + "<a href='" + twitter + "' target='_blank'>"+ twitter + "</a>"+ "</p>"
+			+ "<p><strong>Github:</strong> " + "<a href='" + github + "' target='_blank'>"+ github + "</a>"+ "</p>"
+			+ "<p><strong>Tumblr:</strong> " + "<a href='" + tumblr + "' target='_blank'>"+ tumblr + "</a>"+ "</p>"
+			+ "<p><strong>G+:</strong> " + "<a href='" + googleplus + "' target='_blank'>"+ googleplus + "</a>"+ "</p>"
+			+ "<p><strong>Steam:</strong> " + steam + "</p>" 
 		//ggj14 + " " + 
 		//ggj15 + " " + 
 		//ld29 + " " + 
 		//ld30 + " " + 
 		//ld31 + " " +
-			"</div>");
-	}
+		+"</div>");
+}
 }
 
 function addName(person){
@@ -111,6 +107,16 @@ function truthy(variable) {
 		return false;
 	}
 	return true;
+}
+
+function addGravitar(person) {
+	var email = person.gsx$email.$t;
+	return "<img src='http://gravatar.com/avatar/" + calcMD5(email) + "'></img>";
+}
+
+function addEmail(person) {
+	var email = person.gsx$email.$t;
+	return "<p><strong>Email:</strong> " + email + "</p>";
 }
 
 
