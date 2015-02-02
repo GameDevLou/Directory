@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="">
+
+    <title></title>
+
+</head>
+<body>
+
+<div class="page">
+</div>
+
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+var docId = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
+var url = "https://spreadsheets.google.com/feeds/list/" + docId + "/od6/public/values?alt=json-in-script&callback=?";
+
+jQuery.getJSON(url).success(function(data) {
+    console.log(data); 
+ $('.page').append('success!');
+}).error(function(message) {
+    console.error('error' + message); 
+    $('.page').append('error' + message);
+}).complete(function() {
+    console.log('completed!'); 
+});
+</script>
+</html>
+
+
+
