@@ -19,16 +19,23 @@
 <script>
 var docId = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
 var url = "https://spreadsheets.google.com/feeds/list/" + docId + "/od6/public/values?alt=json-in-script&callback=?";
+var directoryData;
 
 jQuery.getJSON(url).success(function(data) {
     console.log(data); 
+    directoryData = data;
  $('.page').append('success!');
+ createDirectory(directoryData);
 }).error(function(message) {
     console.error('error' + message); 
     $('.page').append('error' + message);
 }).complete(function() {
     console.log('completed!'); 
 });
+
+function createDirectory(json){
+	$('.page').append(JSON.stringify(json));
+}
 </script>
 </html>
 
