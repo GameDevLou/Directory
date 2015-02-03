@@ -1,12 +1,37 @@
 
 	<style>
 	.person{
-		margin: 15px;
+		margin: 15px 0 ;
 		padding: 15px;
+		background: rgba(0,0,0,.05);
+		border-radius: 8px;
+		min-height: 170px;
 	}
-	.directoryPhoto{
-		max-width: 200px;
-		max-height: 200px;
+	.person:after{
+    clear: both;
+    display: table;
+    content:"";
+    }
+	.person h3{
+		margin: 0;
+	}
+	.personContent{
+		float: left;
+		width: 65%;
+		display: inline-block;
+	}
+	.person .photoHolder{
+		text-align: center;
+		float: right;
+		width: 35%;
+		display: inline-block;
+	}
+	.person .directoryPhoto{
+		
+		max-width: 150px;
+		max-height: 150px;
+		margin: 0 auto;
+
 	}
 	</style>
 
@@ -50,8 +75,8 @@ count ++;
 		// var ld31 = people[i].ld31.$t;
 
 		$('.directoryPage').append("<div class='person'>" 
-			+ addAnchor(people[i]) 
-			+ addPhoto(people[i]) 
+			+ "<div class='photoHolder'>"+ addPhoto(people[i]) +"</div>"
+			+ "<div class='personContent'>"
 			+ addName(people[i])
 			+ addField(people[i], "Studio", "studio")
 			+ addField(people[i], "Bio", "bio")
@@ -65,7 +90,7 @@ count ++;
 			+ addTumblr(people[i])
 			+ addGooglePlus(people[i])
 			+ addSteam(people[i])
-			+"</div><hr/>");
+			+"</div></div>");
 	}
 $(".devCount").text(count);
 }
