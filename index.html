@@ -169,7 +169,7 @@ function addTwitter(person) {
 	if(!truthy(twitterId)){
 		return "";
 	}
-	return "<p><strong>Twitter: </strong><a href='https://twitter.com/"+twitterId+"'>"+twitterId+"</a></p>";
+	return "<p><strong>Twitter: </strong><a href='https://twitter.com/"+twitterId+"'>@"+twitterId+"</a></p>";
 }
 function addTumblr(person) {
 	var tumblrId = person["tumblr"].$t;
@@ -184,7 +184,7 @@ function addGithub(person) {
 	if(!truthy(githubId)){
 		return "";
 	}
-	return "<p><strong>Github:</strong><a href='https://github.com/"+githubId+"'>"+githubId+"</a></p>";
+	return "<p><strong>Github: </strong><a href='https://github.com/"+githubId+"'>"+githubId+"</a></p>";
 }
 
 function addGooglePlus(person) {
