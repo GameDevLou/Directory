@@ -1,5 +1,3 @@
 # Directory
 
-Goal
-
-use this Directory page to read the JSON file and format it into a directory of members.
+Reads data from a google doc (public url) and formats it into a member directory.
