@@ -104,20 +104,20 @@ function addName(person){
 	var firstname = person.firstname.$t;
 	var lastname = person.lastname.$t;
 	var nicknames = person.nicknames.$t;
-	if(truthy(firstname)) {
+	if(hasContent(firstname)) {
 		name += firstname + " ";
 	}
-	if(truthy(nicknames)) {
+	if(hasContent(nicknames)) {
 		name += "'"+nicknames+"' ";
 	}
-	if(truthy(lastname)) {
+	if(hasContent(lastname)) {
 		name += lastname;
 	}
 	return name + "</h3>";
 }
 function addPhoto(person) {
 	var photoURL = person.photourl.$t;
-	if(!truthy(photoURL)){
+	if(!hasContent(photoURL)){
 		return "";
 	}
 	return "<img class='directoryPhoto' src='" + photoURL + "'></img>";
@@ -125,7 +125,7 @@ function addPhoto(person) {
 
 function addGravitar(person) {
 	var email = person.email.$t;
-	if(!truthy(email)){
+	if(!hasContent(email)){
 		return "";
 	}
 	return "<img src='http://gravatar.com/avatar/" + calcMD5(email) + "'></img>";
@@ -133,7 +133,7 @@ function addGravitar(person) {
 
 function addEmail(person) {
 	var email = person.email.$t;
-	if(!truthy(email)){
+	if(!hasContent(email)){
 		return "";
 	}
 	return "<p><strong>Email: </strong> <a href='mailto:"+email+"'>" + email + "</a></p>";
@@ -141,7 +141,7 @@ function addEmail(person) {
 
 function addField(person, name, field) {
 	var field = person[field].$t;
-	if(!truthy(field)){
+	if(!hasContent(field)){
 		return "";
 	}
 	return "<p><strong>"+name+": </strong>" + field + "</a></p>";
@@ -149,7 +149,7 @@ function addField(person, name, field) {
 
 function addWebsite(person) {
 	var website = person["website"].$t;
-	if(!truthy(website)){
+	if(!hasContent(website)){
 		return "";
 	}
 	return "<p><strong>Website: </strong><a href='" + website + "'>"+website+"</a></p>";
@@ -157,14 +157,14 @@ function addWebsite(person) {
 
 function addTwitter(person) {
 	var twitterId = person["twitter"].$t;
-	if(!truthy(twitterId)){
+	if(!hasContent(twitterId)){
 		return "";
 	}
 	return "<p><strong>Twitter: </strong><a href='https://twitter.com/"+twitterId+"'>@"+twitterId+"</a></p>";
 }
 function addTumblr(person) {
 	var tumblrId = person["tumblr"].$t;
-	if(!truthy(tumblrId)){
+	if(!hasContent(tumblrId)){
 		return "";
 	}
 	return "<p><strong>Tumblr: </strong><a href='https://"+tumblrId+".tumblr.com/'>"+tumblrId+"</a></p>";
@@ -172,7 +172,7 @@ function addTumblr(person) {
 
 function addGithub(person) {
 	var githubId = person["github"].$t;
-	if(!truthy(githubId)){
+	if(!hasContent(githubId)){
 		return "";
 	}
 	return "<p><strong>Github: </strong><a href='https://github.com/"+githubId+"'>"+githubId+"</a></p>";
@@ -180,7 +180,7 @@ function addGithub(person) {
 
 function addGooglePlus(person) {
 	var googleplusId = person["googleplus"].$t;
-	if(!truthy(googleplusId)){
+	if(!hasContent(googleplusId)){
 		return "";
 	}
 	return "<p><strong>GooglePlus: </strong><a href='https://googleplus.com/"+googleplusId+"'>"+googleplusId+"</a></p>";
@@ -188,7 +188,7 @@ function addGooglePlus(person) {
 
 function addSteam(person) {
 	var steamId = person["steam"].$t;
-	if(!truthy(steamId)){
+	if(!hasContent(steamId)){
 		return "";
 	}
 	return "<p><strong>Steam: </strong><a href='https://steamcommunity.com/id/"+steamId+"'>"+steamId+"</a></p>";
@@ -199,9 +199,9 @@ function addBadges(person){
 
 	var ggj14 = person.ggj14.$t.replace("'", "" );
 	var ggj14link = person.ggj14link.$t;
-	if(truthy(ggj14)){
+	if(hasContent(ggj14)){
 		var ggj14badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj14.png' title='"+ggj14+" - Global Game Jam - 2014 - We dont see things as they are, we see them as we are.'/>";
-		if(truthy(ggj14link)){
+		if(hasContent(ggj14link)){
 			badges += "<a href='"+ggj14link+"' target='_blank'>";
 			badges += ggj14badge;
 			badges += "</a>";
@@ -212,9 +212,9 @@ function addBadges(person){
 	}
 	var ld29 = person.ld29.$t.replace("'", "" );
 	var ld29link = person.ld29link.$t;
-	if(truthy(ld29)){
+	if(hasContent(ld29)){
 		var ld29badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld29.png' title='"+ld29+" - Ludum Dare 29 - April 2014	- Beneath the surface'/>";
-		if(truthy(ld30link)){
+		if(hasContent(ld30link)){
 			badges += "<a href='"+ld29link+"' target='_blank'>";
 			badges += ld29badge;
 			badges += "</a>";
@@ -225,9 +225,9 @@ function addBadges(person){
 
 	var ld30 = person.ld30.$t.replace("'", "" );
 	var ld30link = person.ld30link.$t;
-	if(truthy(ld30)){
+	if(hasContent(ld30)){
 		var ld30badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld30.png' title='"+ld30+" - Ludum Dare 30 - August 2014 - Connected Worlds'/>";
-		if(truthy(ld30link)){
+		if(hasContent(ld30link)){
 			badges += "<a href='"+ld30link+"' target='_blank'>";
 			badges += ld30badge;
 			badges += "</a>";
@@ -238,9 +238,9 @@ function addBadges(person){
 
 	var ld31 = person.ld31.$t.replace("'", "" );
 	var ld31link = person.ld31link.$t;
-	if(truthy(ld31)){
+	if(hasContent(ld31)){
 		var ld31badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld31.png' title='"+ld31+" - Ludum Dare 31 - December 2014 - Entire Game on One Screen!'/>";
-		if(truthy(ld31link)){
+		if(hasContent(ld31link)){
 			badges += "<a href='"+ld31link+"' target='_blank'>";
 			badges += ld31badge;
 			badges += "</a>";
@@ -251,9 +251,9 @@ function addBadges(person){
 
 	var ggj15 = person.ggj15.$t.replace("'", "" );
 	var ggj15link = person.ggj15link.$t;
-	if(truthy(ggj15)){
+	if(hasContent(ggj15)){
 		var ggj15badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj15.png' title='"+ggj15+" - Global Game Jam - 2015 - What do we do now?'/>";
-		if(truthy(ggj15link)){
+		if(hasContent(ggj15link)){
 			badges += "<a href='"+ggj15link+"' target='_blank'>";
 			badges += ggj15badge;
 			badges += "</a>";
@@ -274,7 +274,7 @@ function cleanGoogleDocsData(person){
 	});
 }
 
-function truthy(variable) {
+function hasContent(variable) {
 	if(variable == undefined || variable == " " || variable == null || variable == ""){
 		return false;
 	}
