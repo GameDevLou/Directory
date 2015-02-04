@@ -94,19 +94,6 @@ function addPerson(personData, div){
 		+ "</div>");
 }
 
-function addAnchor(person){
-	var name = "<a name='";
-	var firstname = person.firstname.$t;
-	var lastname = person.lastname.$t;
-	if(truthy(firstname)) {
-		name += firstname;
-	}
-	if(truthy(lastname)) {
-		name += lastname;
-	}
-	return name + "'></a>";
-}
-
 function addName(person){
 	var name = "<h3>";
 	var firstname = person.firstname.$t;
