@@ -49,7 +49,7 @@ var people;
 jQuery.getJSON(url).success(function(data) {
 	console.log(data); 
 	people = data.feed.entry;
-	createDirectory(people);
+	createDirectory(people, ".directoryPage");
 	printCount("devCount", people);
 	$(".devCount").text(people.length);
 	$(".loading").hide();
@@ -60,36 +60,38 @@ jQuery.getJSON(url).success(function(data) {
 	console.log('completed!'); 
 });
 
-function createDirectory(people){
+function createDirectory(people, div){
 	for (var i =0; i < people.length; i++){
 		var thisPerson = people[i];
-
 		cleanGoogleDocsData(person);
 		// var ggj14 = person.ggj14.$t;
 		// var ggj15 = person.ggj15.$t;
 		// var ld29 = person.ld29.$t;
 		// var ld30 = person.ld30.$t;
 		// var ld31 = person.ld31.$t;
-
-		$('.directoryPage').append("<div class='person'>" 
-			+ "<div class='photoHolder'>"+ addPhoto(person) +"</div>"
-				+ "<div class='personContent'>"
-					+ addName(person)
-					+ addField(person, "Studio", "studio")
-					+ addField(person, "Bio", "bio")
-					+ addField(person, "Projects", "projects")
-					+ addField(person, "Skills", "skills")
-					+ addField(person, "Seeking", "seeking")
-					+ addEmail(person)
-					+ addWebsite(person)
-					+ addTwitter(person)
-					+ addGithub(person)
-					+ addTumblr(person)
-					+ addGooglePlus(person)
-					+ addSteam(person)
-				+ "</div>"
-			+ "</div>");
+		addPerson(person, div)
 	}
+}
+
+function addPerson(personData, div){
+	$(div).append("<div class='person'>" 
+		+ "<div class='photoHolder'>"+ addPhoto(person) +"</div>"
+			+ "<div class='personContent'>"
+				+ addName(person)
+				+ addField(person, "Studio", "studio")
+				+ addField(person, "Bio", "bio")
+				+ addField(person, "Projects", "projects")
+				+ addField(person, "Skills", "skills")
+				+ addField(person, "Seeking", "seeking")
+				+ addEmail(person)
+				+ addWebsite(person)
+				+ addTwitter(person)
+				+ addGithub(person)
+				+ addTumblr(person)
+				+ addGooglePlus(person)
+				+ addSteam(person)
+			+ "</div>"
+		+ "</div>");
 }
 
 function addAnchor(person){
