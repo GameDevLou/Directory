@@ -1,44 +1,94 @@
 <style>
-.person{
-	margin: 15px 0 ;
-	padding: 15px;
-	background: rgba(0,0,0,.05);
-	border-radius: 8px;
-	min-height: 170px;
+.person {
+  margin: 15px 0;
+  padding: 15px;
+  background: #f2f2f2;
+  border-radius: 8px;
+  min-height: 170px;
 }
-.person:after{
-	clear: both;
-	display: table;
-	content:"";
-}
-.person h3{
-	margin: 0;
-}
-.personContent{
-	float: left;
-	width: 65%;
-	display: inline-block;
-}
-.photoHolder{
-	text-align: center;
-	float: right;
-	width: 35%;
-	display: inline-block;
-}
-.directoryPhoto{
-	width: 100%;
-	height: auto;
-	max-width: 200px;
 
-	margin: 0 auto;
+.person:after {
+  clear: both;
+  display: table;
+  content: "";
 }
-.badge{
-	width: 45px;
-	display: inline-block;
-	margin: 2px 5px;
-	border-radius: 0 !important;
-	box-shadow: none !important;
+
+.person h3 {
+  margin: 0;
 }
+
+.personContent {
+  display: inline-block;
+  float: left;
+}
+@media (min-width: 1025px) {
+  .personContent {
+    width: 65%;
+  }
+}
+@media (min-width: 731px) and (max-width: 1024px) {
+  .personContent {
+    width: 65%;
+  }
+}
+@media (min-width: 320px) and (max-width: 730px) {
+  .personContent {
+    width: 100%;
+  }
+}
+
+.photoHolder {
+  text-align: center;
+  display: inline-block;
+  float: right;
+}
+@media (min-width: 1025px) {
+  .photoHolder {
+    width: 35%;
+  }
+}
+@media (min-width: 731px) and (max-width: 1024px) {
+  .photoHolder {
+    width: 35%;
+  }
+}
+@media (min-width: 320px) and (max-width: 730px) {
+  .photoHolder {
+    width: 100%;
+  }
+}
+
+.directoryPhoto {
+  width: 100%;
+  height: auto;
+  max-width: 200px;
+  box-shadow: none !important;
+}
+@media (min-width: 1025px) {
+  .directoryPhoto {
+    margin: 0 0 10px 10px;
+  }
+}
+@media (min-width: 731px) and (max-width: 1024px) {
+  .directoryPhoto {
+    margin: 0 auto;
+  }
+}
+@media (min-width: 320px) and (max-width: 730px) {
+  .directoryPhoto {
+    margin: 0 auto;
+  }
+}
+
+.badge {
+  width: 45px;
+  display: inline-block;
+  margin: 2px 5px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+
 </style>
 
 <h3> <span class="devCount"></span> Independant Game Developers!</h3>
@@ -120,7 +170,7 @@ function addName(person){
 function addPhoto(person) {
 	var photoURL = person.photourl.$t;
 	if(!hasContent(photoURL)){
-		return "";
+		return "<img class='directoryPhoto' src='http://gamedevlou.org/wp-content/uploads/2015/02/nophoto.png'></img>";
 	}
 	return "<img class='directoryPhoto' src='" + photoURL + "'></img>";
 }
@@ -146,9 +196,9 @@ function addWebsite(person) {
 	if(!hasContent(website)){
 		return "";
 	}
-	if(!website.contains("http://")){
-			return "<p><strong>Website: </strong><a href='http://"+website+"'>"+website+"</a></p>";
-		}
+	// if(!website.contains("http://")){
+	// 		return "<p><strong>Website: </strong><a href='http://"+website+"'>"+website+"</a></p>";
+	// 	}
 	return "<p><strong>Website: </strong><a href='" + website + "'>"+website+"</a></p>";
 }
 
@@ -164,12 +214,12 @@ function addTumblr(person) {
 	if(!hasContent(tumblrId)){
 		return "";
 	}
-	if(tumblrId.contains(".")){
-		if(!tumblrId.contains("http://")){
-			return "<p><strong>Tumblr: </strong><a href='http://"+tumblrId+"'>"+tumblrId+"</a></p>";
-		}
-		return "<p><strong>Tumblr: </strong><a href='"+tumblrId+"'>"+tumblrId+"</a></p>";
-	}
+	// if(tumblrId.contains(".")){
+	// 	// if(!tumblrId.contains("http://")){
+	// 	// 	return "<p><strong>Tumblr: </strong><a href='http://"+tumblrId+"'>"+tumblrId+"</a></p>";
+	// 	// }
+	// 	return "<p><strong>Tumblr: </strong><a href='"+tumblrId+"'>"+tumblrId+"</a></p>";
+	// }
 	return "<p><strong>Tumblr: </strong><a href='https://"+tumblrId+".tumblr.com/'>"+tumblrId+"</a></p>";
 }
 
@@ -234,7 +284,8 @@ function addBadges(person, data){
 		var gameLink = person[thisBadge.link].$t
 		if(hasContent(person[badge].$t)){
 			var badge = "<img class='badge' src='" + thisBadge.image + "' alt='" + gameName + thisBadge.description + "' title='" + gameName + thisBadge.description + "'/>";
-			if(hasContent(thisBadge.link)){
+			if(hasContent(gameLink)){
+				console.log("gameLink",gameLink);
 				badges += "<a href='"+gameLink+"' target='_blank'>";
 				badges += badge;
 				badges += "</a>";
