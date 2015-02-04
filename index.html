@@ -81,7 +81,7 @@ function addPerson(person, div){
 	$(div).append("<div class='person'>" 
 		+ "<div class='photoHolder'>"
 		+ addPhoto(person) 
-		+ addBadges(person)
+		+ addBadges(person, badgeData)
 		+"</div>"
 			+ "<div class='personContent'>"
 				+ addName(person)
@@ -154,6 +154,9 @@ function addWebsite(person) {
 	if(!hasContent(website)){
 		return "";
 	}
+	if(!website.contains("http://")){
+			return "<p><strong>Website: </strong><a href='http://"+website+"'>"+website+"</a></p>";
+		}
 	return "<p><strong>Website: </strong><a href='" + website + "'>"+website+"</a></p>";
 }
 
@@ -202,73 +205,51 @@ function addSteam(person) {
 	return "<p><strong>Steam: </strong><a href='https://steamcommunity.com/id/"+steamId+"'>"+steamId+"</a></p>";
 }
 
-function addBadges(person){
+var badgeData = {
+	"ggj14": {
+		"link": "ggj14link",
+		"description": " - Global Game Jam - 2014 - We dont see things as they are, we see them as we are.",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj14.png"
+	},
+	"ld29": {
+		"link": "ld29link",
+		"description": " - Ludum Dare 29 - April 2014	- Beneath the surface",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld29.png"
+	},
+	"ld30": {
+		"link": "ld30link",
+		"description": " - Ludum Dare 30 - August 2014 - Connected Worlds",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld30.png"
+	},
+	"ld31": {
+		"link": "ld31link",
+		"description": " - Ludum Dare 31 - December 2014 - Entire Game on One Screen!",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld31.png"
+	},
+	"ggj15": {
+		"link": "ggj15link",
+		"description": " - Global Game Jam - 2015 - What do we do now?",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj15.png"
+	}
+};
+function addBadges(person, data){
 	var badges = "<div class='badges'>";
 
-	var ggj14 = person.ggj14.$t.replace("'", "" );
-	var ggj14link = person.ggj14link.$t;
-	if(hasContent(ggj14)){
-		var ggj14badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj14.png' title='"+ggj14+" - Global Game Jam - 2014 - We dont see things as they are, we see them as we are.'/>";
-		if(hasContent(ggj14link)){
-			badges += "<a href='"+ggj14link+"' target='_blank'>";
-			badges += ggj14badge;
-			badges += "</a>";
-		}else{
-			badges += ggj14badge;
+	Object.keys(data).forEach(function(badge) {
+		var thisBadge = data[badge];
+		var gameName = person[badge].$t;
+		var gameLink = person[thisBadge.link].$t
+		if(hasContent(person[badge].$t)){
+			var badge = "<img class='badge' src='" + thisBadge.image + "' alt='" + gameName + thisBadge.description + "' title='" + gameName + thisBadge.description + "'/>";
+			if(hasContent(thisBadge.link)){
+				badges += "<a href='"+gameLink+"' target='_blank'>";
+				badges += badge;
+				badges += "</a>";
+			}else{
+				badges += badge;
+			}
 		}
-			
-	}
-	var ld29 = person.ld29.$t.replace("'", "" );
-	var ld29link = person.ld29link.$t;
-	if(hasContent(ld29)){
-		var ld29badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld29.png' title='"+ld29+" - Ludum Dare 29 - April 2014	- Beneath the surface'/>";
-		if(hasContent(ld29link)){
-			badges += "<a href='"+ld29link+"' target='_blank'>";
-			badges += ld29badge;
-			badges += "</a>";
-		}else{
-			badges += ld29badge;
-		}
-	}
-
-	var ld30 = person.ld30.$t.replace("'", "" );
-	var ld30link = person.ld30link.$t;
-	if(hasContent(ld30)){
-		var ld30badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld30.png' title='"+ld30+" - Ludum Dare 30 - August 2014 - Connected Worlds'/>";
-		if(hasContent(ld30link)){
-			badges += "<a href='"+ld30link+"' target='_blank'>";
-			badges += ld30badge;
-			badges += "</a>";
-		}else{
-			badges += ld30badge;
-		}
-	}
-
-	var ld31 = person.ld31.$t.replace("'", "" );
-	var ld31link = person.ld31link.$t;
-	if(hasContent(ld31)){
-		var ld31badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld31.png' title='"+ld31+" - Ludum Dare 31 - December 2014 - Entire Game on One Screen!'/>";
-		if(hasContent(ld31link)){
-			badges += "<a href='"+ld31link+"' target='_blank'>";
-			badges += ld31badge;
-			badges += "</a>";
-		}else{
-			badges += ld31badge;
-		}
-	}
-
-	var ggj15 = person.ggj15.$t.replace("'", "" );
-	var ggj15link = person.ggj15link.$t;
-	if(hasContent(ggj15)){
-		var ggj15badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj15.png' title='"+ggj15+" - Global Game Jam - 2015 - What do we do now?'/>";
-		if(hasContent(ggj15link)){
-			badges += "<a href='"+ggj15link+"' target='_blank'>";
-			badges += ggj15badge;
-			badges += "</a>";
-		}else{
-			badges += ggj15badge;
-		}
-	}
+	});
 
 	return badges += "</div>";
 }
