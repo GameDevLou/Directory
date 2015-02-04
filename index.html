@@ -44,12 +44,13 @@
 <script>
 var docId = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
 var url = "https://spreadsheets.google.com/feeds/list/" + docId + "/od6/public/values?alt=json-in-script&callback=?";
-var directoryData;
+var people;
 
 jQuery.getJSON(url).success(function(data) {
 	console.log(data); 
-	directoryData = data.feed.entry;
-	createDirectory(directoryData);
+	people = data.feed.entry;
+	createDirectory(people);
+	$(".devCount").text(people.length);
 	$(".loading").hide();
 }).error(function(message) {
 	console.error('error' + message); 
@@ -59,10 +60,8 @@ jQuery.getJSON(url).success(function(data) {
 });
 
 function createDirectory(people){
-	var count = 1;
 	for (var i =0; i < people.length; i++){
 		cleanGoogleDocsData(people[i]);
-count ++;
 		// var ggj14 = people[i].ggj14.$t;
 		// var ggj15 = people[i].ggj15.$t;
 		// var ld29 = people[i].ld29.$t;
@@ -87,7 +86,6 @@ count ++;
 			+ addSteam(people[i])
 			+"</div></div>");
 	}
-$(".devCount").text(count);
 }
 
 function addAnchor(person){
