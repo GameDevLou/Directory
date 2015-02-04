@@ -1,4 +1,7 @@
 <style>
+* {-webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 .person {
   margin: 15px 0;
   padding: 15px;
@@ -45,6 +48,7 @@
 @media (min-width: 1025px) {
   .photoHolder {
     width: 35%;
+    padding: 0 10px 10px 10px;
   }
 }
 @media (min-width: 731px) and (max-width: 1024px) {
@@ -63,21 +67,6 @@
   height: auto;
   max-width: 200px;
   box-shadow: none !important;
-}
-@media (min-width: 1025px) {
-  .directoryPhoto {
-    margin: 0 0 10px 10px;
-  }
-}
-@media (min-width: 731px) and (max-width: 1024px) {
-  .directoryPhoto {
-    margin: 0 auto;
-  }
-}
-@media (min-width: 320px) and (max-width: 730px) {
-  .directoryPhoto {
-    margin: 0 auto;
-  }
 }
 
 .badge {
@@ -220,7 +209,7 @@ function addTumblr(person) {
 	// 	// }
 	// 	return "<p><strong>Tumblr: </strong><a href='"+tumblrId+"'>"+tumblrId+"</a></p>";
 	// }
-	return "<p><strong>Tumblr: </strong><a href='https://"+tumblrId+".tumblr.com/'>"+tumblrId+"</a></p>";
+	return "<p><strong>Tumblr: </strong><a href='http://"+tumblrId+".tumblr.com/'>"+tumblrId+"</a></p>";
 }
 
 function addGithub(person) {
@@ -228,7 +217,7 @@ function addGithub(person) {
 	if(!hasContent(githubId)){
 		return "";
 	}
-	return "<p><strong>Github: </strong><a href='https://github.com/"+githubId+"'>"+githubId+"</a></p>";
+	return "<p><strong>Github: </strong><a href='http://github.com/"+githubId+"'>"+githubId+"</a></p>";
 }
 
 function addGooglePlus(person) {
@@ -236,7 +225,7 @@ function addGooglePlus(person) {
 	if(!hasContent(googleplusId)){
 		return "";
 	}
-	return "<p><strong>GooglePlus: </strong><a href='https://googleplus.com/"+googleplusId+"'>"+googleplusId+"</a></p>";
+	return "<p><strong>GooglePlus: </strong><a href='http://googleplus.com/"+googleplusId+"'>"+googleplusId+"</a></p>";
 }
 
 function addSteam(person) {
@@ -244,7 +233,7 @@ function addSteam(person) {
 	if(!hasContent(steamId)){
 		return "";
 	}
-	return "<p><strong>Steam: </strong><a href='https://steamcommunity.com/id/"+steamId+"'>"+steamId+"</a></p>";
+	return "<p><strong>Steam: </strong><a href='http://steamcommunity.com/id/"+steamId+"'>"+steamId+"</a></p>";
 }
 
 var badgeData = {
