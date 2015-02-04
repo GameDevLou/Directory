@@ -30,6 +30,13 @@
 	max-height: 150px;
 	margin: 0 auto;
 }
+.badge{
+	width: 45px;
+	display: inline-block;
+	margin: 2px 5px;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+}
 </style>
 
 <h3> <span class="devCount"></span> Independant Game Developers!</h3>
@@ -62,20 +69,18 @@ jQuery.getJSON(url).success(function(data) {
 
 function createDirectory(people, div){
 	for (var i =0; i < people.length; i++){
-		var thisPerson = people[i];
+		var person = people[i];
 		cleanGoogleDocsData(person);
-		// var ggj14 = person.ggj14.$t;
-		// var ggj15 = person.ggj15.$t;
-		// var ld29 = person.ld29.$t;
-		// var ld30 = person.ld30.$t;
-		// var ld31 = person.ld31.$t;
 		addPerson(person, div)
 	}
 }
 
-function addPerson(personData, div){
+function addPerson(person, div){
 	$(div).append("<div class='person'>" 
-		+ "<div class='photoHolder'>"+ addPhoto(person) +"</div>"
+		+ "<div class='photoHolder'>"
+		+ addPhoto(person) 
+		+ addBadges(person)
+		+"</div>"
 			+ "<div class='personContent'>"
 				+ addName(person)
 				+ addField(person, "Studio", "studio")
@@ -187,6 +192,77 @@ function addSteam(person) {
 		return "";
 	}
 	return "<p><strong>Steam: </strong><a href='https://steamcommunity.com/id/"+steamId+"'>"+steamId+"</a></p>";
+}
+
+function addBadges(person){
+	var badges = "<div class='badges'>";
+
+	var ggj14 = person.ggj14.$t.replace("'", "" );
+	var ggj14link = person.ggj14link.$t;
+	if(truthy(ggj14)){
+		var ggj14badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj14.png' title='"+ggj14+" - Global Game Jam - 2014 - We dont see things as they are, we see them as we are.'/>";
+		if(truthy(ggj14link)){
+			badges += "<a href='"+ggj14link+"' target='_blank'>";
+			badges += ggj14badge;
+			badges += "</a>";
+		}else{
+			badges += ggj14badge;
+		}
+			
+	}
+	var ld29 = person.ld29.$t.replace("'", "" );
+	var ld29link = person.ld29link.$t;
+	if(truthy(ld29)){
+		var ld29badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld29.png' title='"+ld29+" - Ludum Dare 29 - April 2014	- Beneath the surface'/>";
+		if(truthy(ld30link)){
+			badges += "<a href='"+ld29link+"' target='_blank'>";
+			badges += ld29badge;
+			badges += "</a>";
+		}else{
+			badges += ld29badge;
+		}
+	}
+
+	var ld30 = person.ld30.$t.replace("'", "" );
+	var ld30link = person.ld30link.$t;
+	if(truthy(ld30)){
+		var ld30badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld30.png' title='"+ld30+" - Ludum Dare 30 - August 2014 - Connected Worlds'/>";
+		if(truthy(ld30link)){
+			badges += "<a href='"+ld30link+"' target='_blank'>";
+			badges += ld30badge;
+			badges += "</a>";
+		}else{
+			badges += ld30badge;
+		}
+	}
+
+	var ld31 = person.ld31.$t.replace("'", "" );
+	var ld31link = person.ld31link.$t;
+	if(truthy(ld31)){
+		var ld31badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld31.png' title='"+ld31+" - Ludum Dare 31 - December 2014 - Entire Game on One Screen!'/>";
+		if(truthy(ld31link)){
+			badges += "<a href='"+ld31link+"' target='_blank'>";
+			badges += ld31badge;
+			badges += "</a>";
+		}else{
+			badges += ld31badge;
+		}
+	}
+
+	var ggj15 = person.ggj15.$t.replace("'", "" );
+	var ggj15link = person.ggj15link.$t;
+	if(truthy(ggj15)){
+		var ggj15badge = "<img class='badge' src='http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj15.png' title='"+ggj15+" - Global Game Jam - 2015 - What do we do now?'/>";
+		if(truthy(ggj15link)){
+			badges += "<a href='"+ggj15link+"' target='_blank'>";
+			badges += ggj15badge;
+			badges += "</a>";
+		}else{
+			badges += ggj15badge;
+		}
+	}
+
+	return badges += "</div>";
 }
 
 function cleanGoogleDocsData(person){
