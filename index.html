@@ -169,6 +169,12 @@ function addTumblr(person) {
 	if(!hasContent(tumblrId)){
 		return "";
 	}
+	if(tumblrId.contains(".")){
+		if(!tumblrId.contains("http://")){
+			return "<p><strong>Tumblr: </strong><a href='http://"+tumblrId+"'>"+tumblrId+"</a></p>";
+		}
+		return "<p><strong>Tumblr: </strong><a href='"+tumblrId+"'>"+tumblrId+"</a></p>";
+	}
 	return "<p><strong>Tumblr: </strong><a href='https://"+tumblrId+".tumblr.com/'>"+tumblrId+"</a></p>";
 }
 
