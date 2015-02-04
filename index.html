@@ -50,6 +50,7 @@ jQuery.getJSON(url).success(function(data) {
 	console.log(data); 
 	people = data.feed.entry;
 	createDirectory(people);
+	printCount("devCount", people);
 	$(".devCount").text(people.length);
 	$(".loading").hide();
 }).error(function(message) {
@@ -61,30 +62,33 @@ jQuery.getJSON(url).success(function(data) {
 
 function createDirectory(people){
 	for (var i =0; i < people.length; i++){
-		cleanGoogleDocsData(people[i]);
-		// var ggj14 = people[i].ggj14.$t;
-		// var ggj15 = people[i].ggj15.$t;
-		// var ld29 = people[i].ld29.$t;
-		// var ld30 = people[i].ld30.$t;
-		// var ld31 = people[i].ld31.$t;
+		var thisPerson = people[i];
+
+		cleanGoogleDocsData(person);
+		// var ggj14 = person.ggj14.$t;
+		// var ggj15 = person.ggj15.$t;
+		// var ld29 = person.ld29.$t;
+		// var ld30 = person.ld30.$t;
+		// var ld31 = person.ld31.$t;
 
 		$('.directoryPage').append("<div class='person'>" 
-			+ "<div class='photoHolder'>"+ addPhoto(people[i]) +"</div>"
-			+ "<div class='personContent'>"
-			+ addName(people[i])
-			+ addField(people[i], "Studio", "studio")
-			+ addField(people[i], "Bio", "bio")
-			+ addField(people[i], "Projects", "projects")
-			+ addField(people[i], "Skills", "skills")
-			+ addField(people[i], "Seeking", "seeking")
-			+ addEmail(people[i])
-			+ addWebsite(people[i])
-			+ addTwitter(people[i])
-			+ addGithub(people[i])
-			+ addTumblr(people[i])
-			+ addGooglePlus(people[i])
-			+ addSteam(people[i])
-			+"</div></div>");
+			+ "<div class='photoHolder'>"+ addPhoto(person) +"</div>"
+				+ "<div class='personContent'>"
+					+ addName(person)
+					+ addField(person, "Studio", "studio")
+					+ addField(person, "Bio", "bio")
+					+ addField(person, "Projects", "projects")
+					+ addField(person, "Skills", "skills")
+					+ addField(person, "Seeking", "seeking")
+					+ addEmail(person)
+					+ addWebsite(person)
+					+ addTwitter(person)
+					+ addGithub(person)
+					+ addTumblr(person)
+					+ addGooglePlus(person)
+					+ addSteam(person)
+				+ "</div>"
+			+ "</div>");
 	}
 }
 
