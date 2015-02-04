@@ -47,17 +47,17 @@ var url = "https://spreadsheets.google.com/feeds/list/" + docId + "/od6/public/v
 var people;
 
 jQuery.getJSON(url).success(function(data) {
-	console.log(data); 
 	people = data.feed.entry;
+
 	createDirectory(people, ".directoryPage");
-	printCount("devCount", people);
+
 	$(".devCount").text(people.length);
+
 	$(".loading").hide();
+
 }).error(function(message) {
-	console.error('error' + message); 
-	$('.directoryPage').append('error' + message);
-}).complete(function() {
-	console.log('completed!'); 
+	console.error("error" + message); 
+	$(".directoryPage").append("There was an error loading the directory");
 });
 
 function createDirectory(people, div){
