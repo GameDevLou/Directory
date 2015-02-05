@@ -77,6 +77,23 @@
   box-shadow: none !important;
 }
 
+.social{
+
+}
+
+.social a{
+	color: #000;
+	font-size: 35px;
+	margin: 5px 10px;
+}
+
+.social a:visited{
+	color: #000;
+}
+
+.social a:hover{
+	color: #ffce38;
+}
 
 </style>
 
@@ -129,13 +146,15 @@ function addPerson(person, div){
 				+ addField(person, "Projects", "projects")
 				+ addField(person, "Skills", "skills")
 				+ addField(person, "Seeking", "seeking")
-				+ addEmail(person)
 				+ addWebsite(person)
-				+ addTwitter(person)
-				+ addGithub(person)
-				+ addTumblr(person)
-				+ addGooglePlus(person)
-				+ addSteam(person)
+				+ "<div class='social'>"
+					+ addEmail(person)
+					+ addTwitter(person)
+					+ addGithub(person)
+					+ addTumblr(person)
+					+ addGooglePlus(person)
+					+ addSteam(person)
+				+ "</div>"
 			+ "</div>"
 		+ "</div>");
 }
@@ -169,7 +188,7 @@ function addEmail(person) {
 	if(!hasContent(email)){
 		return "";
 	}
-	return "<p><strong>Email: </strong> <a href='mailto:"+email+"'>" + email + "</a></p>";
+	return "<a href='mailto:"+email+"'><i class='fa fa-envelope'></i></a>";
 }
 
 function addField(person, name, field) {
@@ -185,9 +204,6 @@ function addWebsite(person) {
 	if(!hasContent(website)){
 		return "";
 	}
-	// if(!website.contains("http://")){
-	// 		return "<p><strong>Website: </strong><a href='http://"+website+"'>"+website+"</a></p>";
-	// 	}
 	return "<p><strong>Website: </strong><a href='" + website + "'>"+website+"</a></p>";
 }
 
@@ -196,20 +212,14 @@ function addTwitter(person) {
 	if(!hasContent(twitterId)){
 		return "";
 	}
-	return "<p><strong>Twitter: </strong><a href='https://twitter.com/"+twitterId+"'>@"+twitterId+"</a></p>";
+	return "<a href='https://twitter.com/"+twitterId+"'><i class='fa fa-twitter'></i></a>";
 }
 function addTumblr(person) {
 	var tumblrId = person["tumblr"].$t;
 	if(!hasContent(tumblrId)){
 		return "";
 	}
-	// if(tumblrId.contains(".")){
-	// 	// if(!tumblrId.contains("http://")){
-	// 	// 	return "<p><strong>Tumblr: </strong><a href='http://"+tumblrId+"'>"+tumblrId+"</a></p>";
-	// 	// }
-	// 	return "<p><strong>Tumblr: </strong><a href='"+tumblrId+"'>"+tumblrId+"</a></p>";
-	// }
-	return "<p><strong>Tumblr: </strong><a href='http://"+tumblrId+".tumblr.com/'>"+tumblrId+"</a></p>";
+	return "<a href='http://"+tumblrId+".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
 }
 
 function addGithub(person) {
@@ -217,7 +227,7 @@ function addGithub(person) {
 	if(!hasContent(githubId)){
 		return "";
 	}
-	return "<p><strong>Github: </strong><a href='http://github.com/"+githubId+"'>"+githubId+"</a></p>";
+	return "<a href='http://github.com/"+githubId+"'><i class='fa fa-github'></i></a>";
 }
 
 function addGooglePlus(person) {
@@ -225,7 +235,7 @@ function addGooglePlus(person) {
 	if(!hasContent(googleplusId)){
 		return "";
 	}
-	return "<p><strong>GooglePlus: </strong><a href='http://googleplus.com/"+googleplusId+"'>"+googleplusId+"</a></p>";
+	return "<a href='http://googleplus.com/"+googleplusId+"'><i class='fa fa-googleplus'></i></a>";
 }
 
 function addSteam(person) {
@@ -233,7 +243,7 @@ function addSteam(person) {
 	if(!hasContent(steamId)){
 		return "";
 	}
-	return "<p><strong>Steam: </strong><a href='http://steamcommunity.com/id/"+steamId+"'>"+steamId+"</a></p>";
+	return "<a href='http://steamcommunity.com/id/"+steamId+"'><i class='fa fa-steam'></i></a>";
 }
 
 var badgeData = {
