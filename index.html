@@ -94,32 +94,86 @@
 .social a:hover{
 	color: #ffce38;
 }
-
+.studios:after{
+    clear: both;
+    display: table;
+    content:"";
+    }
+	
+.studio img{
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 0 !important;
+  	box-shadow: none !important;
+}
+.studio{
+	text-align: center;
+	width: 133px;
+	height: 133px;
+	background: #f2f2f2;
+    border-radius: 4px;
+    display: inline-block;
+	float: left;
+	margin: 5px;
+	//cursor: pointer;
+}
+.studio:hover{
+	//background: #ffce38;
+}
 </style>
 
 <h3> <span class="devCount"></span> Independant Game Developers!</h3>
 <h1>New, or have questions?</h1>
 <p>Contact <a href="mailto:mjrevel@gmail.com ">Mike</a>, <a href="mailto:barryrowe@gmail.com">Barry</a>, <a href="mailto:mattiegrichards@gmail.com ">Mattie</a>, <a href="mailto:eric@twoscoopgames.com">Eric</a>, or <a href="mailto:alex@twoscoopgames.com">Alex</a>, and we can help you out!</p>
 <div class="loading">loading...</div>
-
-	<div class="directoryPage"></div>
+<div class="studiosContainer"><h3>Studios:</h3></div>
+	<div class="directoryPage"><h3>Members:</h3></div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <script>
+var studioData = {
+	"ggj14": {
+		"link": "ggj14link",
+		"description": " - Global Game Jam - 2014 - We dont see things as they are, we see them as we are.",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj14.png"
+	},
+	"ld29": {
+		"link": "ld29link",
+		"description": " - Ludum Dare 29 - April 2014	- Beneath the surface",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld29.png"
+	},
+	"ld30": {
+		"link": "ld30link",
+		"description": " - Ludum Dare 30 - August 2014 - Connected Worlds",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld30.png"
+	},
+	"ld31": {
+		"link": "ld31link",
+		"description": " - Ludum Dare 31 - December 2014 - Entire Game on One Screen!",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld31.png"
+	},
+	"ggj15": {
+		"link": "ggj15link",
+		"description": " - Global Game Jam - 2015 - What do we do now?",
+		"image": "http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj15.png"
+	}
+};
+
 var docId = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
 var url = "https://spreadsheets.google.com/feeds/list/" + docId + "/od6/public/values?alt=json-in-script&callback=?";
 var people;
+var studios = {"": ""};
 
 jQuery.getJSON(url).success(function(data) {
 	people = data.feed.entry;
 
 	createDirectory(people, ".directoryPage");
-
+ 	console.log(studios);
 	$(".devCount").text(people.length);
 
 	$(".loading").hide();
-
+	$(".studiosContainer").append(buildStudios(studios));
 }).error(function(message) {
 	console.error("error" + message); 
 	$(".directoryPage").append("There was an error loading the directory");
@@ -129,8 +183,26 @@ function createDirectory(people, div){
 	for (var i =0; i < people.length; i++){
 		var person = people[i];
 		cleanGoogleDocsData(person);
+		var studioName = person.studio.$t;
+		if(hasContent(studioName)){
+			Object.keys(studios).forEach(function(studio) {
+				if (studio.indexOf(studioName) == -1) {
+					studios[studioName] = person.studiologo.$t;
+				}
+			});
+		}
 		addPerson(person, div)
 	}
+}
+
+function buildStudios(studios){
+	var studioHTML = "<div class='studios'>";
+	Object.keys(studios).forEach(function(studio) {
+		studioHTML += "<div class='studio'>";
+		studioHTML += "<img src='"+studios[studio]+"'/ alt='"+studio+"'>";
+		studioHTML += "</div>"
+	});
+	return studioHTML + "</div>";
 }
 
 function addPerson(person, div){
@@ -284,7 +356,6 @@ function addBadges(person, data){
 		if(hasContent(person[badge].$t)){
 			var badge = "<img class='badge' src='" + thisBadge.image + "' alt='" + gameName + thisBadge.description + "' title='" + gameName + thisBadge.description + "'/>";
 			if(hasContent(gameLink)){
-				console.log("gameLink",gameLink);
 				badges += "<a href='"+gameLink+"' target='_blank'>";
 				badges += badge;
 				badges += "</a>";
