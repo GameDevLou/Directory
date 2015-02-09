@@ -9,29 +9,29 @@ function displayPeople( $people, $badgeData ) {
 	$peopleHTML = "";
 	foreach ( $people as $person ) {
 		if ( $person['gsx$showonsite']['$t'] == "TRUE" ) {
-			$peopleHTML .= "<div class='person'>";
-			$peopleHTML .= "<div class='photoHolder'>";
-			$peopleHTML .= addPhoto( $person );
-			$peopleHTML .= addBadges( $person, $badgeData );
-			$peopleHTML .= "</div>";
-			$peopleHTML .= "<div class='personContent'>";
-			$peopleHTML .= addName( $person );
-			$peopleHTML .= addField( $person, "Studio", "studio" );
-			$peopleHTML .= addField( $person, "Bio", "bio" );
-			$peopleHTML .= addField( $person, "Projects", "projects" );
-			$peopleHTML .= addField( $person, "Skills", "skills" );
-			$peopleHTML .= addField( $person, "Seeking", "seeking" );
-			$peopleHTML .= addWebsite( $person );
-			$peopleHTML .= "<div class='social'>";
-			$peopleHTML .= addEmail( $person );
-			$peopleHTML .= addTwitter( $person );
-			$peopleHTML .= addTumblr( $person );
-			$peopleHTML .= addGithub( $person );
-			$peopleHTML .= addGooglePlus( $person );
-			$peopleHTML .= addSteam( $person );
-			$peopleHTML .= "</div>";
-			$peopleHTML .= "</div>";
-			$peopleHTML .= "</div>";
+		$peopleHTML .= "<div class='person'>"
+						. "<div class='photoHolder'>"
+							. addPhoto( $person )
+							. addBadges( $person, $badgeData )
+						. "</div>"
+						. "<div class='personContent'>"
+						. addName( $person )
+						. addField( $person, "Studio", "studio" )
+						. addField( $person, "Bio", "bio" )
+						. addField( $person, "Projects", "projects" )
+						. addField( $person, "Skills", "skills" )
+						. addField( $person, "Seeking", "seeking" )
+						. addWebsite( $person )
+							. "<div class='social'>"
+								. addEmail( $person )
+								. addTwitter( $person )
+								. addTumblr( $person )
+								. addGithub( $person )
+								. addGooglePlus( $person )
+								. addSteam( $person )
+							. "</div>"
+						. "</div>"
+					. "</div>";
 		}
 	}
 	return $peopleHTML;
@@ -101,7 +101,7 @@ function addTwitter( $person ) {
 	if ( empty( $twitterId ) ) {
 		return "";
 	}
-	return "<a href='https://twitter.com/" . $twitterId . "'><i class='fa fa-twitter'></i></a>";
+	return "<a href='https://twitter.com/" . htmlentities($twitterId) . "'><i class='fa fa-twitter'></i></a>";
 }
 
 function addTumblr( $person ) {
@@ -176,7 +176,7 @@ function addBadges( $person, $data ) {
 		$gameName = $person['gsx$' . $badge->name]['$t'];
 		$gameLink = $person['gsx$' . $badge->link]['$t'];
 		if ( !empty( $person['gsx$' . $badge->name]['$t'] ) ) {
-			$badgeHTML = "<img class='badge' src='" . $badge->image . "' alt='" . $gameName . $badge->description . "' title='" . $gameName . $badge->description . "'/>";
+			$badgeHTML = "<img class='badge' src='" . $badge->image . "' alt='" . htmlentities($gameName) . $badge->description . "' title='" . $gameName . $badge->description . "'/>";
 			if ( !empty( $gameLink ) ) {
 				$badges .= "<a href='". $gameLink . "' target='_blank'>";
 				$badges .= $badgeHTML;
@@ -204,10 +204,24 @@ function displayContactPeople( $people ) {
 
 ?>
 
+<h3><?php echo countPeople( $people ); ?>Independant Game Developers!</h3>
+
+<h1>New, or have questions?</h1>
+<p>Contact <?php echo displayContactPeople( $people ) ?> and we can help you out!</p>
+
+<div class="directoryPage">
+	<h3>Members:</h3>
+	<?php echo displayPeople( $people, $badgeData ); ?>
+</div>
+
+
 <style>
-* {-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box; }
+	* {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box; 
+	}
+
 	.person {
 		margin: 15px 0;
 		padding: 15px;
@@ -336,13 +350,3 @@ function displayContactPeople( $people ) {
 		/*background: #ffce38;*/
 	}
 </style>
-
-<h3><?php echo countPeople( $people ); ?>Independant Game Developers!</h3>
-
-<h1>New, or have questions?</h1>
-<p>Contact <?php echo displayContactPeople( $people ) ?> and we can help you out!</p>
-
-<div class="directoryPage">
-	<h3>Members:</h3>
-	<?php echo displayPeople( $people, $badgeData ); ?>
-</div>
