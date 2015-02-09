@@ -49,17 +49,14 @@ function countPeople( $people ) {
 
 function addName( $person ) {
 	$name = "<h3>";
-	$firstname = $person['gsx$firstname']['$t'];
-	$lastname = $person['gsx$lastname']['$t'];
-	$nicknames = $person['gsx$nicknames']['$t'];
-	if ( !empty( $firstname ) ) {
-		$name .= $firstname . " ";
+	if ( !empty( $person['gsx$firstname']['$t'] ) ) {
+		$name .= $person['gsx$firstname']['$t'] . " ";
 	}
-	if ( !empty( $nicknames ) ) {
-		$name .= "'" . $nicknames . "' ";
+	if ( !empty( $person['gsx$nicknames']['$t'] ) ) {
+		$name .= "'" . $person['gsx$nicknames']['$t'] . "' ";
 	}
-	if ( !empty( $lastname ) ) {
-		$name .= $lastname;
+	if ( !empty( $person['gsx$lastname']['$t'] ) ) {
+		$name .= $person['gsx$lastname']['$t'];
 	}
 	return $name . "</h3>";
 }
@@ -69,7 +66,18 @@ function addPhoto( $person ) {
 	if ( empty( $photoURL ) ) {
 		return "<img class='directoryPhoto' src='http://gamedevlou.org/wp-content/uploads/2015/02/nophoto.png'></img>";
 	}
-	return "<img class='directoryPhoto' src='" . $photoURL . "'></img>";
+	$name = "";
+	if ( !empty( $person['gsx$firstname']['$t'] ) ) {
+		$name .= $person['gsx$firstname']['$t'] . " ";
+	}
+	if ( !empty( $person['gsx$lastname']['$t'] ) ) {
+		$name .= $person['gsx$lastname']['$t'];
+	}
+	$location = "";
+	if ( !empty( $person['gsx$location']['$t'] ) ) {
+		$location .= $person['gsx$location']['$t'];
+	}
+	return "<img class='directoryPhoto' src='" . htmlentities($photoURL) . "' alt='". htmlentities($name) ." - independant game developer - " . htmlentities($location) . "'></img>";
 }
 
 function addField( $person, $name, $field ) {
@@ -77,7 +85,7 @@ function addField( $person, $name, $field ) {
 	if ( empty( $field ) ) {
 		return "";
 	}
-	return "<p><strong>" . $name . ": </strong>" . $field . "</a></p>";
+	return "<p><strong>" . htmlentities($name) . ": </strong>" . htmlentities($field) . "</a></p>";
 }
 
 function addEmail( $person ) {
@@ -85,7 +93,7 @@ function addEmail( $person ) {
 	if ( empty( $email ) ) {
 		return "";
 	}
-	return "<a href='mailto:" . $email . "'><i class='fa fa-envelope'></i></a>";
+	return "<a href='mailto:" . htmlentities($email) . "'><i class='fa fa-envelope'></i></a>";
 }
 
 function addWebsite( $person ) {
@@ -93,7 +101,7 @@ function addWebsite( $person ) {
 	if ( empty( $website ) ) {
 		return "";
 	}
-	return "<p><strong>Website: </strong><a href='" . $website . "'>" . $website ."</a></p>";
+	return "<p><strong>Website: </strong><a href='" . htmlentities($website) . "'>" . htmlentities($website) ."</a></p>";
 }
 
 function addTwitter( $person ) {
@@ -109,7 +117,7 @@ function addTumblr( $person ) {
 	if ( empty( $tumblrId ) ) {
 		return "";
 	}
-	return "<a href='http://" . $tumblrId . ".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
+	return "<a href='http://" . htmlentities($tumblrId) . ".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
 }
 
 function addGithub( $person ) {
@@ -117,7 +125,7 @@ function addGithub( $person ) {
 	if ( empty( $githubId ) ) {
 		return "";
 	}
-	return "<a href='http://github.com/" . $githubId . "'><i class='fa fa-github'></i></a>";
+	return "<a href='http://github.com/" . htmlentities($githubId) . "'><i class='fa fa-github'></i></a>";
 }
 
 function addGooglePlus( $person ) {
@@ -125,7 +133,7 @@ function addGooglePlus( $person ) {
 	if ( empty( $googleplusId ) ) {
 		return "";
 	}
-	return "<a href='http://googleplus.com/" .$googleplusId . "'><i class='fa fa-googleplus'></i></a>";
+	return "<a href='http://googleplus.com/" . htmlentities($googleplusId) . "'><i class='fa fa-googleplus'></i></a>";
 }
 
 function addSteam( $person ) {
@@ -133,7 +141,7 @@ function addSteam( $person ) {
 	if ( empty( $steamId ) ) {
 		return "";
 	}
-	return "<a href='http://steamcommunity.com/id/" . $steamId . "'><i class='fa fa-steam'></i></a>";
+	return "<a href='http://steamcommunity.com/id/" . htmlentities($steamId) . "'><i class='fa fa-steam'></i></a>";
 }
 
 $badgeData = (object) array(
@@ -174,11 +182,12 @@ function addBadges( $person, $data ) {
 
 	foreach ( $data as $badge ) {
 		$gameName = $person['gsx$' . $badge->name]['$t'];
+		$gameName = str_replace("'", "&rsquo;", $gameName);
 		$gameLink = $person['gsx$' . $badge->link]['$t'];
 		if ( !empty( $person['gsx$' . $badge->name]['$t'] ) ) {
 			$badgeHTML = "<img class='badge' src='" . $badge->image . "' alt='" . htmlentities($gameName) . $badge->description . "' title='" . $gameName . $badge->description . "'/>";
 			if ( !empty( $gameLink ) ) {
-				$badges .= "<a href='". $gameLink . "' target='_blank'>";
+				$badges .= "<a href='". htmlentities($gameLink) . "' target='_blank'>";
 				$badges .= $badgeHTML;
 				$badges .= "</a>";
 			}else {
@@ -204,7 +213,7 @@ function displayContactPeople( $people ) {
 
 ?>
 
-<h3><?php echo countPeople( $people ); ?>Independant Game Developers!</h3>
+<h3><?php echo countPeople( $people ); ?> Independant Game Developers!</h3>
 
 <h1>New, or have questions?</h1>
 <p>Contact <?php echo displayContactPeople( $people ) ?> and we can help you out!</p>
