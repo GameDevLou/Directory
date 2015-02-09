@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<head><meta charset="utf-8"></head>
 <style>
 * {-webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -94,6 +96,11 @@
 .social a:hover{
 	color: #ffce38;
 }
+
+.studios{
+	text-align: center;
+}
+
 .studios:after{
     clear: both;
     display: table;
@@ -101,24 +108,28 @@
     }
 	
 .studio img{
-	max-width: 100%;
-	max-height: 100%;
+	width: 100%;
+	mheight: 100%;
 	border-radius: 0 !important;
   	box-shadow: none !important;
 }
+
 .studio{
+	vertical-align: top;
 	text-align: center;
-	width: 133px;
-	height: 133px;
+	width: 109px;
+	height: 109px;
 	background: #f2f2f2;
-    border-radius: 4px;
+    border-radius: 20px;
     display: inline-block;
-	float: left;
-	margin: 5px;
-	//cursor: pointer;
+	margin: 17px;
+	/*cursor: pointer;*/
+	overflow: hidden;
+	box-shadow: 0 3px 4px 2px rgba(0,0,0,.2);
 }
+
 .studio:hover{
-	//background: #ffce38;
+	/*background: #ffce38;*/
 }
 </style>
 
@@ -163,17 +174,18 @@ var studioData = {
 var docId = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
 var url = "https://spreadsheets.google.com/feeds/list/" + docId + "/od6/public/values?alt=json-in-script&callback=?";
 var people;
-var studios = {"": ""};
 
 jQuery.getJSON(url).success(function(data) {
 	people = data.feed.entry;
 
-	createDirectory(people, ".directoryPage");
- 	console.log(studios);
-	$(".devCount").text(people.length);
+	$(".directoryPage").append(displayPeople(people));
+
+	$(".devCount").text(countPeople(people));
+
+	$(".studiosContainer").append(diaplayStudios(getStudioData(people)));
 
 	$(".loading").hide();
-	$(".studiosContainer").append(buildStudios(studios));
+
 }).error(function(message) {
 	console.error("error" + message); 
 	$(".directoryPage").append("There was an error loading the directory");
@@ -183,52 +195,83 @@ function createDirectory(people, div){
 	for (var i =0; i < people.length; i++){
 		var person = people[i];
 		cleanGoogleDocsData(person);
-		var studioName = person.studio.$t;
-		if(hasContent(studioName)){
-			Object.keys(studios).forEach(function(studio) {
-				if (studio.indexOf(studioName) == -1) {
-					studios[studioName] = person.studiologo.$t;
-				}
-			});
-		}
-		addPerson(person, div)
+	
 	}
 }
 
-function buildStudios(studios){
+
+function getStudioData(people){
+	var studios = {};
+	for (var i =0; i < people.length; i++){
+		if(hasContent(people[i].studio.$t) && people[i].showonsite.$t === "TRUE"){
+			studios['"'+ people[i].studio.$t +'"'] = {
+				"logo": people[i].studiologo.$t,
+				"link": people[i].studiolink.$t
+			};
+		}
+	}
+	return studios;
+}
+
+function diaplayStudios(studios){
+	console.log("studios", studios);
 	var studioHTML = "<div class='studios'>";
+
 	Object.keys(studios).forEach(function(studio) {
-		studioHTML += "<div class='studio'>";
-		studioHTML += "<img src='"+studios[studio]+"'/ alt='"+studio+"'>";
-		studioHTML += "</div>"
+		if(hasContent(studios[studio].logo)){
+			studioHTML += "<div class='studio' data-link='" + studios[studio].link + "'>";
+			studioHTML += "<img src='" + studios[studio].logo + "'/ alt='" + studio + "'>";
+			studioHTML += "</div>";
+		}
 	});
 	return studioHTML + "</div>";
 }
 
-function addPerson(person, div){
-	$(div).append("<div class='person'>" 
-		+ "<div class='photoHolder'>"
-		+ addPhoto(person) 
-		+ addBadges(person, badgeData)
-		+"</div>"
-			+ "<div class='personContent'>"
-				+ addName(person)
-				+ addField(person, "Studio", "studio")
-				+ addField(person, "Bio", "bio")
-				+ addField(person, "Projects", "projects")
-				+ addField(person, "Skills", "skills")
-				+ addField(person, "Seeking", "seeking")
-				+ addWebsite(person)
-				+ "<div class='social'>"
-					+ addEmail(person)
-					+ addTwitter(person)
-					+ addGithub(person)
-					+ addTumblr(person)
-					+ addGooglePlus(person)
-					+ addSteam(person)
-				+ "</div>"
-			+ "</div>"
-		+ "</div>");
+function countPeople(people){
+	var count = 0;
+	for (var i =0; i < people.length; i++){
+		if(people[i].showonsite.$t === "TRUE"){
+			count++;
+		}
+	}
+	return count;
+}
+
+function displayPeople(people){
+	var peopleHTML = ""
+	for (var i =0; i < people.length; i++){
+		var person = people[i];
+		
+		cleanGoogleDocsData(person);
+
+		if(person.showonsite.$t === "TRUE"){
+			peopleHTML += "<div class='person'>"; 
+			peopleHTML += "<div class='photoHolder'>";
+			peopleHTML += addPhoto(person);
+			peopleHTML += addBadges(person, badgeData);
+			peopleHTML += "</div>";
+			peopleHTML += "<div class='personContent'>";
+			peopleHTML += addName(person);
+			peopleHTML += addField(person, "Studio", "studio");
+			peopleHTML += addField(person, "Bio", "bio");
+			peopleHTML += addField(person, "Projects", "projects");
+			peopleHTML += addField(person, "Skills", "skills");
+			peopleHTML += addField(person, "Seeking", "seeking");
+			peopleHTML += addWebsite(person);
+			peopleHTML += "<div class='social'>";
+			peopleHTML += addEmail(person);
+			peopleHTML += addTwitter(person);
+			peopleHTML += addGithub(person);
+			peopleHTML += addTumblr(person);
+			peopleHTML += addGooglePlus(person);
+			peopleHTML += addSteam(person);
+			peopleHTML += "</div>";
+			peopleHTML += "</div>";
+			peopleHTML += "</div>";
+		}
+	}
+
+	return peopleHTML;
 }
 
 function addName(person){
