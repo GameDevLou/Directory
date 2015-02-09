@@ -30,7 +30,7 @@ function displayPeople($people){
 			$peopleHTML .= addWebsite($person);
 			$peopleHTML .= "<div class='social'>";
  			$peopleHTML .= addEmail($person);
- 			//$peopleHTML .= addTwitter(person);
+ 			$peopleHTML .= addTwitter($person);
  			//$peopleHTML .= addGithub(person);
  			//$peopleHTML .= addTumblr(person);
  			//$peopleHTML .= addGooglePlus(person);
@@ -101,6 +101,14 @@ function addWebsite($person) {
 		return "";
 	}
 	return "<p><strong>Website: </strong><a href='" . $website . "'>" . $website ."</a></p>";
+}
+
+function addTwitter($person) {
+	$twitterId = $person['gsx$twitter']['$t'];
+	if(empty($twitterId)){
+		return "";
+	}
+	return "<a href='https://twitter.com/" . $twitterId . "'><i class='fa fa-twitter'></i></a>";
 }
 
 ?>
