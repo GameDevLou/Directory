@@ -208,6 +208,7 @@ function displayContactPeople( $people ) {
 }
 
 ?>
+
 <style>
 * {-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -339,12 +340,9 @@ function displayContactPeople( $people ) {
 	.studio:hover{
 		/*background: #ffce38;*/
 	}
-	</style>
+</style>
 
-<h3>
-	<span class="devCount"><?php echo countPeople( $people ); ?></span>
-	Independant Game Developers!
-</h3>
+<h3><?php echo countPeople( $people ); ?>Independant Game Developers!</h3>
 
 <h1>New, or have questions?</h1>
 <p>Contact <?php echo displayContactPeople( $people ) ?> and we can help you out!</p>
