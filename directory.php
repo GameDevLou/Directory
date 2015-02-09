@@ -31,8 +31,8 @@ function displayPeople($people){
 			$peopleHTML .= "<div class='social'>";
  			$peopleHTML .= addEmail($person);
  			$peopleHTML .= addTwitter($person);
+ 			$peopleHTML .= addTumblr($person);
  			//$peopleHTML .= addGithub(person);
- 			//$peopleHTML .= addTumblr(person);
  			//$peopleHTML .= addGooglePlus(person);
 			//$peopleHTML .= addSteam(person);
 			$peopleHTML .= "</div>";
@@ -110,6 +110,15 @@ function addTwitter($person) {
 	}
 	return "<a href='https://twitter.com/" . $twitterId . "'><i class='fa fa-twitter'></i></a>";
 }
+
+function addTumblr($person) {
+	$tumblrId = $person['gsx$tumblr']['$t'];
+	if(empty($tumblrId)){
+		return "";
+	}
+	return "<a href='http://" . $tumblrId . ".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
+}
+
 
 ?>
 <style>
