@@ -1,12 +1,8 @@
 <?php
-
 $docId = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
-//$url = "https://spreadsheets.google.com/feeds/list/" . $docId . "/od6/public/values?alt=json";
 $url = "http://spreadsheets.google.com/feeds/list/" . $docId . "/od6/public/values?alt=json&amp;callback=displayContent";
-
 $json = file_get_contents( $url );
 $data = json_decode( $json, TRUE );
-
 $people = $data['feed']['entry'];
 
 function displayPeople( $people, $badgeData ) {
@@ -38,7 +34,6 @@ function displayPeople( $people, $badgeData ) {
 			$peopleHTML .= "</div>";
 		}
 	}
-
 	return $peopleHTML;
 }
 
