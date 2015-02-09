@@ -22,14 +22,14 @@ function displayPeople($people){
 			$peopleHTML .= "</div>";
 			$peopleHTML .= "<div class='personContent'>";
 			$peopleHTML .= addName($person);
- 			//$peopleHTML .= addField(person, "Studio", "studio");
- 			//$peopleHTML .= addField(person, "Bio", "bio");
- 			//$peopleHTML .= addField(person, "Projects", "projects");
- 			//$peopleHTML .= addField(person, "Skills", "skills");
- 			//$peopleHTML .= addField(person, "Seeking", "seeking");
-			//$peopleHTML .= addWebsite(person);
+ 			$peopleHTML .= addField($person, "Studio", "studio");
+ 			$peopleHTML .= addField($person, "Bio", "bio");
+ 			$peopleHTML .= addField($person, "Projects", "projects");
+ 			$peopleHTML .= addField($person, "Skills", "skills");
+ 			$peopleHTML .= addField($person, "Seeking", "seeking");
+			$peopleHTML .= addWebsite($person);
 			$peopleHTML .= "<div class='social'>";
- 			//$peopleHTML .= addEmail(person);
+ 			$peopleHTML .= addEmail($person);
  			//$peopleHTML .= addTwitter(person);
  			//$peopleHTML .= addGithub(person);
  			//$peopleHTML .= addTumblr(person);
@@ -77,6 +77,30 @@ function addPhoto($person) {
 		return "<img class='directoryPhoto' src='http://gamedevlou.org/wp-content/uploads/2015/02/nophoto.png'></img>";
 	}
 	return "<img class='directoryPhoto' src='" . $photoURL . "'></img>";
+}
+
+function addField($person, $name, $field) {
+	$field = $person['gsx$' . $field]['$t'];
+	if(empty($field)){
+		return "";
+	}
+	return "<p><strong>" . $name . ": </strong>" . $field . "</a></p>";
+}
+
+function addEmail($person) {
+	$email = $person['gsx$email']['$t'];
+	if(empty($email)){
+		return "";
+	}
+	return "<a href='mailto:" . $email . "'><i class='fa fa-envelope'></i></a>";
+}
+
+function addWebsite($person) {
+	$website = $person['gsx$website']['$t'];
+	if(empty($website)){
+		return "";
+	}
+	return "<p><strong>Website: </strong><a href='" . $website . "'>" . $website ."</a></p>";
 }
 
 ?>
