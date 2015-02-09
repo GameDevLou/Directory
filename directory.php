@@ -77,7 +77,7 @@ function addPhoto( $person ) {
 	if ( !empty( $person['gsx$location']['$t'] ) ) {
 		$location .= $person['gsx$location']['$t'];
 	}
-	return "<img class='directoryPhoto' src='" . htmlentities($photoURL) . "' alt='". htmlentities($name) ." - independant game developer - " . htmlentities($location) . "'></img>";
+	return "<img class='directoryPhoto' src='" . htmlspecialchars($photoURL) . "' alt='". htmlspecialchars($name) ." - independant game developer - " . htmlspecialchars($location) . "'></img>";
 }
 
 function addField( $person, $name, $field ) {
@@ -85,7 +85,7 @@ function addField( $person, $name, $field ) {
 	if ( empty( $field ) ) {
 		return "";
 	}
-	return "<p><strong>" . htmlentities($name) . ": </strong>" . htmlentities($field) . "</a></p>";
+	return "<p><strong>" . htmlspecialchars($name) . ": </strong>" . htmlspecialchars($field) . "</a></p>";
 }
 
 function addEmail( $person ) {
@@ -93,7 +93,7 @@ function addEmail( $person ) {
 	if ( empty( $email ) ) {
 		return "";
 	}
-	return "<a href='mailto:" . htmlentities($email) . "'><i class='fa fa-envelope'></i></a>";
+	return "<a href='mailto:" . htmlspecialchars($email) . "'><i class='fa fa-envelope'></i></a>";
 }
 
 function addWebsite( $person ) {
@@ -101,7 +101,7 @@ function addWebsite( $person ) {
 	if ( empty( $website ) ) {
 		return "";
 	}
-	return "<p><strong>Website: </strong><a href='" . htmlentities($website) . "'>" . htmlentities($website) ."</a></p>";
+	return "<p><strong>Website: </strong><a href='" . htmlspecialchars($website) . "'>" . htmlspecialchars($website) ."</a></p>";
 }
 
 function addTwitter( $person ) {
@@ -109,7 +109,7 @@ function addTwitter( $person ) {
 	if ( empty( $twitterId ) ) {
 		return "";
 	}
-	return "<a href='https://twitter.com/" . htmlentities($twitterId) . "'><i class='fa fa-twitter'></i></a>";
+	return "<a href='https://twitter.com/" . htmlspecialchars($twitterId) . "'><i class='fa fa-twitter'></i></a>";
 }
 
 function addTumblr( $person ) {
@@ -117,7 +117,7 @@ function addTumblr( $person ) {
 	if ( empty( $tumblrId ) ) {
 		return "";
 	}
-	return "<a href='http://" . htmlentities($tumblrId) . ".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
+	return "<a href='http://" . htmlspecialchars($tumblrId) . ".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
 }
 
 function addGithub( $person ) {
@@ -125,7 +125,7 @@ function addGithub( $person ) {
 	if ( empty( $githubId ) ) {
 		return "";
 	}
-	return "<a href='http://github.com/" . htmlentities($githubId) . "'><i class='fa fa-github'></i></a>";
+	return "<a href='http://github.com/" . htmlspecialchars($githubId) . "'><i class='fa fa-github'></i></a>";
 }
 
 function addGooglePlus( $person ) {
@@ -133,7 +133,7 @@ function addGooglePlus( $person ) {
 	if ( empty( $googleplusId ) ) {
 		return "";
 	}
-	return "<a href='http://googleplus.com/" . htmlentities($googleplusId) . "'><i class='fa fa-googleplus'></i></a>";
+	return "<a href='http://googleplus.com/" . htmlspecialchars($googleplusId) . "'><i class='fa fa-googleplus'></i></a>";
 }
 
 function addSteam( $person ) {
@@ -141,7 +141,7 @@ function addSteam( $person ) {
 	if ( empty( $steamId ) ) {
 		return "";
 	}
-	return "<a href='http://steamcommunity.com/id/" . htmlentities($steamId) . "'><i class='fa fa-steam'></i></a>";
+	return "<a href='http://steamcommunity.com/id/" . htmlspecialchars($steamId) . "'><i class='fa fa-steam'></i></a>";
 }
 
 $badgeData = (object) array(
@@ -185,9 +185,9 @@ function addBadges( $person, $data ) {
 		$gameName = str_replace("'", "&rsquo;", $gameName);
 		$gameLink = $person['gsx$' . $badge->link]['$t'];
 		if ( !empty( $person['gsx$' . $badge->name]['$t'] ) ) {
-			$badgeHTML = "<img class='badge' src='" . $badge->image . "' alt='" . htmlentities($gameName) . $badge->description . "' title='" . $gameName . $badge->description . "'/>";
+			$badgeHTML = "<img class='badge' src='" . $badge->image . "' alt='" . htmlspecialchars($gameName) . $badge->description . "' title='" . $gameName . $badge->description . "'/>";
 			if ( !empty( $gameLink ) ) {
-				$badges .= "<a href='". htmlentities($gameLink) . "' target='_blank'>";
+				$badges .= "<a href='". htmlspecialchars($gameLink) . "' target='_blank'>";
 				$badges .= $badgeHTML;
 				$badges .= "</a>";
 			}else {
