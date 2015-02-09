@@ -5,18 +5,9 @@ $docId = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
 $url = "http://spreadsheets.google.com/feeds/list/" . $docId . "/od6/public/values?alt=json&amp;callback=displayContent";
 
 $json = file_get_contents($url);
-//echo $json;
 $data = json_decode($json, TRUE);
-//$people = $data->feed->entry;
-
-
-//debugSrc($people);
 
 $people = $data['feed']['entry'];
-
-
-
-
 
 function displayPeople($people){
 	$peopleHTML = "";
@@ -24,39 +15,34 @@ function displayPeople($people){
 		if($person['gsx$showonsite']['$t'] == "TRUE"){
 			//echo $person['gsx$firstname']['$t'];
 			//echo $person['gsx$lastname']['$t'];
-	
-
-
-		$peopleHTML .= "<div class='person'>"; 
-$peopleHTML .= "<div class='photoHolder'>";
-// 			//$peopleHTML .= addPhoto(person);
-// 			//$peopleHTML .= addBadges(person, badgeData);
-$peopleHTML .= "</div>";
-$peopleHTML .= "<div class='personContent'>";
-$peopleHTML .= addName($person);
-// 			//$peopleHTML .= addField(person, "Studio", "studio");
-// 			//$peopleHTML .= addField(person, "Bio", "bio");
-// 			//$peopleHTML .= addField(person, "Projects", "projects");
-// 			//$peopleHTML .= addField(person, "Skills", "skills");
-// 			//$peopleHTML .= addField(person, "Seeking", "seeking");
-// 			//$peopleHTML .= addWebsite(person);
-$peopleHTML .= "<div class='social'>";
-// 			//$peopleHTML .= addEmail(person);
-// 			//$peopleHTML .= addTwitter(person);
-// 			//$peopleHTML .= addGithub(person);
-// 			//$peopleHTML .= addTumblr(person);
-// 			//$peopleHTML .= addGooglePlus(person);
-// 			//$peopleHTML .= addSteam(person);
-$peopleHTML .= "</div>";
+			$peopleHTML .= "<div class='person'>"; 
+			$peopleHTML .= "<div class='photoHolder'>";
+			$peopleHTML .= addPhoto($person);
+ 			//$peopleHTML .= addBadges(person, badgeData);
+			$peopleHTML .= "</div>";
+			$peopleHTML .= "<div class='personContent'>";
+			$peopleHTML .= addName($person);
+ 			//$peopleHTML .= addField(person, "Studio", "studio");
+ 			//$peopleHTML .= addField(person, "Bio", "bio");
+ 			//$peopleHTML .= addField(person, "Projects", "projects");
+ 			//$peopleHTML .= addField(person, "Skills", "skills");
+ 			//$peopleHTML .= addField(person, "Seeking", "seeking");
+			//$peopleHTML .= addWebsite(person);
+			$peopleHTML .= "<div class='social'>";
+ 			//$peopleHTML .= addEmail(person);
+ 			//$peopleHTML .= addTwitter(person);
+ 			//$peopleHTML .= addGithub(person);
+ 			//$peopleHTML .= addTumblr(person);
+ 			//$peopleHTML .= addGooglePlus(person);
+			//$peopleHTML .= addSteam(person);
 			$peopleHTML .= "</div>";
 			$peopleHTML .= "</div>";
-
-// 	}
-				}
+			$peopleHTML .= "</div>";
+		}
 	}
 
 	return $peopleHTML;
- }
+}
 
 function countPeople($people){
 	$count = 0;
@@ -85,85 +71,92 @@ function addName($person){
 	return $name . "</h3>";
 }
 
+function addPhoto($person) {
+	$photoURL = $person['gsx$photourl']['$t'];
+	if(empty($photoURL)){
+		return "<img class='directoryPhoto' src='http://gamedevlou.org/wp-content/uploads/2015/02/nophoto.png'></img>";
+	}
+	return "<img class='directoryPhoto' src='" . $photoURL . "'></img>";
+}
 
 ?>
 <style>
-	* {-webkit-box-sizing: border-box;
-	  -moz-box-sizing: border-box;
-	  box-sizing: border-box; }
+* {-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box; }
 	.person {
-	  margin: 15px 0;
-	  padding: 15px;
-	  background: #f2f2f2;
-	  border-radius: 8px;
-	  min-height: 170px;
+		margin: 15px 0;
+		padding: 15px;
+		background: #f2f2f2;
+		border-radius: 8px;
+		min-height: 170px;
 	}
 
 	.person:after {
-	  clear: both;
-	  display: table;
-	  content: "";
+		clear: both;
+		display: table;
+		content: "";
 	}
 
 	.person h3 {
-	  margin: 0;
+		margin: 0;
 	}
 
 	.personContent {
-	  display: inline-block;
-	  float: left;
+		display: inline-block;
+		float: left;
 	}
 	@media (min-width: 1025px) {
-	  .personContent {
-	    width: 65%;
-	  }
+		.personContent {
+			width: 65%;
+		}
 	}
 	@media (min-width: 731px) and (max-width: 1024px) {
-	  .personContent {
-	    width: 65%;
-	  }
+		.personContent {
+			width: 65%;
+		}
 	}
 	@media (min-width: 320px) and (max-width: 730px) {
-	  .personContent {
-	    width: 100%;
-	  }
+		.personContent {
+			width: 100%;
+		}
 	}
 
 	.photoHolder {
-	  text-align: center;
-	  display: inline-block;
-	  float: right;
+		text-align: center;
+		display: inline-block;
+		float: right;
 	}
 	@media (min-width: 1025px) {
-	  .photoHolder {
-	    width: 35%;
-	    padding: 0 10px 10px 10px;
-	  }
+		.photoHolder {
+			width: 35%;
+			padding: 0 10px 10px 10px;
+		}
 	}
 	@media (min-width: 731px) and (max-width: 1024px) {
-	  .photoHolder {
-	    width: 35%;
-	  }
+		.photoHolder {
+			width: 35%;
+		}
 	}
 	@media (min-width: 320px) and (max-width: 730px) {
-	  .photoHolder {
-	    width: 100%;
-	  }
+		.photoHolder {
+			width: 100%;
+		}
 	}
 
 	.directoryPhoto {
-	  width: 100%;
-	  height: auto;
-	  max-width: 200px;
-	  box-shadow: none !important;
+		width: 100%;
+		height: auto;
+		max-width: 200px;
+		box-shadow: none !important;
 	}
 
 	.badge {
-	  width: 45px;
-	  display: inline-block;
-	  margin: 2px 5px;
-	  border-radius: 0 !important;
-	  box-shadow: none !important;
+		width: 45px;
+		display: inline-block;
+		margin: 2px 5px;
+		border-radius: 0 !important;
+		box-shadow: none !important;
 	}
 
 	.social{
@@ -189,16 +182,16 @@ function addName($person){
 	}
 
 	.studios:after{
-	    clear: both;
-	    display: table;
-	    content:"";
-	    }
-		
+		clear: both;
+		display: table;
+		content:"";
+	}
+
 	.studio img{
 		width: 100%;
 		mheight: 100%;
 		border-radius: 0 !important;
-	  	box-shadow: none !important;
+		box-shadow: none !important;
 	}
 
 	.studio{
@@ -207,8 +200,8 @@ function addName($person){
 		width: 109px;
 		height: 109px;
 		background: #f2f2f2;
-	    border-radius: 20px;
-	    display: inline-block;
+		border-radius: 20px;
+		display: inline-block;
 		margin: 17px;
 		/*cursor: pointer;*/
 		overflow: hidden;
@@ -218,15 +211,15 @@ function addName($person){
 	.studio:hover{
 		/*background: #ffce38;*/
 	}
-</style>
+	</style>
 
-<h3> 
-	<span class="devCount"><?php echo countPeople($people); ?></span> 
-	Independant Game Developers!
-</h3>
+	<h3> 
+		<span class="devCount"><?php echo countPeople($people); ?></span> 
+		Independant Game Developers!
+	</h3>
 
-<div class="directoryPage">
-	<h3>Members:</h3>
-	<?php echo displayPeople($people); ?>
-</div>
+	<div class="directoryPage">
+		<h3>Members:</h3>
+		<?php echo displayPeople($people); ?>
+	</div>
 
