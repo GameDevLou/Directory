@@ -9,16 +9,14 @@ $data = json_decode($json, TRUE);
 
 $people = $data['feed']['entry'];
 
-function displayPeople($people){
+function displayPeople($people, $badgeData){
 	$peopleHTML = "";
 	foreach ($people as $person) {
 		if($person['gsx$showonsite']['$t'] == "TRUE"){
-			//echo $person['gsx$firstname']['$t'];
-			//echo $person['gsx$lastname']['$t'];
 			$peopleHTML .= "<div class='person'>"; 
 			$peopleHTML .= "<div class='photoHolder'>";
 			$peopleHTML .= addPhoto($person);
- 			//$peopleHTML .= addBadges(person, badgeData);
+ 			$peopleHTML .= addBadges($person, $badgeData);
 			$peopleHTML .= "</div>";
 			$peopleHTML .= "<div class='personContent'>";
 			$peopleHTML .= addName($person);
@@ -32,9 +30,9 @@ function displayPeople($people){
  			$peopleHTML .= addEmail($person);
  			$peopleHTML .= addTwitter($person);
  			$peopleHTML .= addTumblr($person);
- 			//$peopleHTML .= addGithub(person);
- 			//$peopleHTML .= addGooglePlus(person);
-			//$peopleHTML .= addSteam(person);
+ 			$peopleHTML .= addGithub($person);
+ 			$peopleHTML .= addGooglePlus($person);
+			$peopleHTML .= addSteam($person);
 			$peopleHTML .= "</div>";
 			$peopleHTML .= "</div>";
 			$peopleHTML .= "</div>";
@@ -119,6 +117,83 @@ function addTumblr($person) {
 	return "<a href='http://" . $tumblrId . ".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
 }
 
+function addGithub($person) {
+	$githubId = $person['gsx$github']['$t'];
+	if(empty($githubId)){
+		return "";
+	}
+	return "<a href='http://github.com/" . $githubId . "'><i class='fa fa-github'></i></a>";
+}
+
+function addGooglePlus($person) {
+	$googleplusId = $person['gsx$googleplus']['$t'];
+	if(empty($googleplusId)){
+		return "";
+	}
+	return "<a href='http://googleplus.com/" .$googleplusId . "'><i class='fa fa-googleplus'></i></a>";
+}
+
+function addSteam($person) {
+	$steamId = $person['gsx$steam']['$t'];
+	if(empty($steamId)){
+		return "";
+	}
+	return "<a href='http://steamcommunity.com/id/" . $steamId . "'><i class='fa fa-steam'></i></a>";
+}
+
+$badgeData = (object) array(
+	'ggj14' => (object) array(
+		'name' => 'ggj14',
+		'link' => 'ggj14link',
+		'description' => ' - Global Game Jam - 2014 - We dont see things as they are, we see them as we are.',
+		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj14.png'
+	),
+	'ld29' => (object) array(
+		'name' => 'ld29',
+		'link' => 'ld29link',
+		'description' => ' - Ludum Dare 29 - April 2014	- Beneath the surface',
+		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld29.png'
+	),
+	'ld30' => (object) array(
+		'name' => 'ld30',
+		'link' => 'ld30link',
+		'description' => ' - Ludum Dare 30 - August 2014 - Connected Worlds',
+		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld30.png'
+	),
+	'ld31' => (object) array(
+		'name' => 'ld31',
+		'link' => 'ld31link',
+		'description' => ' - Ludum Dare 31 - December 2014 - Entire Game on One Screen!',
+		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld31.png'
+	),
+	'ggj15' => (object) array(
+		'name' => 'ggj15',
+		'link' => 'ggj15link',
+		'description' => ' - Global Game Jam - 2015 - What do we do now?',
+		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj15.png'
+	)
+);
+
+function addBadges($person, $data){
+	$badges = "<div class='badges'>";
+
+	foreach ($data as $badge) {
+		$gameName = $person['gsx$' . $badge->name]['$t'];
+		$gameLink = $person['gsx$' . $badge->link]['$t'];
+		if(!empty($person['gsx$' . $badge->name]['$t'])){
+			$badgeHTML = "<img class='badge' src='" . $badge->image . "' alt='" . $gameName . $badge->description . "' title='" . $gameName . $badge->description . "'/>";
+			if(!empty($gameLink)){
+				$badges .= "<a href='". $gameLink . "' target='_blank'>";
+				$badges .= $badgeHTML;
+				$badges .= "</a>";
+			}else{
+				$badges .= $badgeHTML;
+			}
+		}
+	};
+
+	return $badges .= "</div>";
+}
 
 ?>
 <style>
@@ -261,6 +336,6 @@ function addTumblr($person) {
 
 	<div class="directoryPage">
 		<h3>Members:</h3>
-		<?php echo displayPeople($people); ?>
+		<?php echo displayPeople($people, $badgeData); ?>
 	</div>
 
