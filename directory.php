@@ -240,7 +240,7 @@ function displayContactPeople( $people ) {
 <h3><?php echo countPeople( $people ); ?> Independant Game Developers!</h3>
 
 <h1>New, or have questions?</h1>
-<p>Contact <?php echo displayContactPeople( $people ) ?> and we can help you out!</p>
+<p>Contact <?php echo displayContactPeople( $people ); ?> and we can help you out!</p>
 
 <div class="directoryPage">
 	<h3>Members:</h3>
