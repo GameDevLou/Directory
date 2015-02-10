@@ -15,6 +15,7 @@ function displayPeople( $people, $badgeData ) {
 							. addBadges( $person, $badgeData )
 						. "</div>"
 						. "<div class='personContent'>"
+						. addAnchor( $person )
 						. addName( $person )
 						. addField( $person, "Studio", "studio" )
 						. addField( $person, "Bio", "bio" )
@@ -45,6 +46,17 @@ function countPeople( $people ) {
 		}
 	}
 	return $count;
+}
+
+function addAnchor( $person ) {
+	$name = "<a name='";
+	if ( !empty( $person['gsx$firstname']['$t'] ) ) {
+		$name .= strtolower( htmlspecialchars( $person['gsx$firstname']['$t'] ) );
+	}
+	if ( !empty( $person['gsx$lastname']['$t'] ) ) {
+		$name .= strtolower( htmlspecialchars( $person['gsx$lastname']['$t'] ) );
+	}
+	return $name . "'></a>";
 }
 
 function addName( $person ) {
