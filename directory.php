@@ -17,7 +17,7 @@ function displayPeople( $people, $badgeData ) {
 						. "<div class='personContent'>"
 						. addAnchor( $person )
 						. addName( $person )
-						. addField( $person, "Studio", "studio" )
+						. addStudio( $person )
 						. addField( $person, "Bio", "bio" )
 						. addField( $person, "Projects", "projects" )
 						. addField( $person, "Skills", "skills" )
@@ -98,6 +98,18 @@ function addField( $person, $name, $field ) {
 		return "";
 	}
 	return "<p><strong>" . htmlspecialchars($name) . ": </strong>" . htmlspecialchars($field) . "</a></p>";
+}
+
+function addStudio( $person ) {
+	$studio = $person['gsx$studio']['$t'];
+	$studiolink = $person['gsx$studiolink']['$t'];
+	if ( empty( $studio ) ) {
+		return "";
+	}
+	if ( empty( $studiolink ) ) {
+		return "<p><strong>Studio: </strong>" . htmlspecialchars($studio) . "</p>";
+	}
+	return "<p><strong>Studio: </strong><a href='" . htmlspecialchars($studiolink) . "'>" . htmlspecialchars($studio) ."</a></p>";
 }
 
 function addEmail( $person ) {
