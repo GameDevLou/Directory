@@ -1,38 +1,70 @@
 <?php
-$docId = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
-$url = "http://spreadsheets.google.com/feeds/list/" . $docId . "/od6/public/values?alt=json&amp;callback=displayContent";
-$json = file_get_contents( $url );
-$data = json_decode( $json, TRUE );
-$people = $data['feed']['entry'];
+$gameDevLouPeople = "1W3S_j9vi58Y5BMTPLdWptTQwScMWv5KrkU-r9R2_dvU";
+$gameDevLouJams = "1yAFycceiw7hi3uIGfPof49V7jGJ0MzTlh0C-2YtS80Q";
 
-function displayPeople( $people, $badgeData ) {
+$people = googleSheetData( $gameDevLouPeople );
+$jams = googleSheetData( $gameDevLouJams );
+
+function googleSheetData( $docId ) {
+	$url = "http://spreadsheets.google.com/feeds/list/" . $docId . "/od6/public/values?alt=json&amp;callback=displayContent";
+	try {
+		$json = file_get_contents( $url );
+	} catch ( Exception $e ) {
+		echo " I AM ERROR <br>";
+		echo $e;
+		return;
+	}
+	$data = json_decode( $json, TRUE );
+	return $data['feed']['entry'];
+}
+
+$peopleModel = createModel( $people );
+$jamsModel = createModel( $jams );
+
+function createModel( $table ) {
+	$model = array();
+	foreach ( $table as $row ) {
+		$newItem = new stdClass;
+		foreach ( $row as $key => $value ) {
+			if ( strpos( $key, 'gsx$' ) !== FALSE ) {
+				$fieldName = str_replace( 'gsx$', '', $key );
+				$content = htmlspecialchars( str_replace( "'", "", $value['$t'] ) );
+				$newItem->$fieldName = $content;
+			}
+		}
+		array_push( $model, $newItem );
+	}
+	return $model;
+}
+
+function displayPeople( $people, $jams ) {
 	$peopleHTML = "";
 	foreach ( $people as $person ) {
-		if ( $person['gsx$showonsite']['$t'] == "TRUE" ) {
-		$peopleHTML .= "<div class='person'>"
-						. "<div class='photoHolder'>"
-							. addPhoto( $person )
-							. addBadges( $person, $badgeData )
-						. "</div>"
-						. "<div class='personContent'>"
-						. addAnchor( $person )
-						. addName( $person )
-						. addStudio( $person )
-						. addField( $person, "Bio", "bio" )
-						. addField( $person, "Projects", "projects" )
-						. addField( $person, "Skills", "skills" )
-						. addField( $person, "Seeking", "seeking" )
-						. addWebsite( $person )
-							. "<div class='social'>"
-								. addEmail( $person )
-								. addTwitter( $person )
-								. addTumblr( $person )
-								. addGithub( $person )
-								. addGooglePlus( $person )
-								. addSteam( $person )
-							. "</div>"
-						. "</div>"
-					. "</div>";
+		if ( $person->showonsite == "TRUE" ) {
+			$peopleHTML .= "<div class='person'>"
+				. "<div class='photoHolder'>"
+				. addPhoto( $person )
+				. addBadges( $person, $jams )
+				. "</div>"
+				. "<div class='personContent'>"
+				. addAnchor( $person )
+				. addName( $person )
+				. addStudio( $person )
+				. addField( $person, "Bio", "bio" )
+				. addField( $person, "Projects", "projects" )
+				. addField( $person, "Skills", "skills" )
+				. addField( $person, "Seeking", "seeking" )
+				. addWebsite( $person )
+				. "<div class='social'>"
+				. addEmail( $person )
+				. addTwitter( $person )
+				. addTumblr( $person )
+				. addGithub( $person )
+				. addGooglePlus( $person )
+				. addSteam( $person )
+				. "</div>"
+				. "</div>"
+				. "</div>";
 		}
 	}
 	return $peopleHTML;
@@ -41,7 +73,7 @@ function displayPeople( $people, $badgeData ) {
 function countPeople( $people ) {
 	$count = 0;
 	foreach ( $people as $person ) {
-		if ( $person['gsx$showonsite']['$t'] == "TRUE" ) {
+		if ( $person->showonsite == "TRUE" ) {
 			$count ++;
 		}
 	}
@@ -50,186 +82,151 @@ function countPeople( $people ) {
 
 function addAnchor( $person ) {
 	$name = "<a name='";
-	if ( !empty( $person['gsx$firstname']['$t'] ) ) {
-		$name .= strtolower( htmlspecialchars( $person['gsx$firstname']['$t'] ) );
+	if ( !empty( $person->firstname ) ) {
+		$name .= strtolower( $person->firstname );
 	}
-	if ( !empty( $person['gsx$lastname']['$t'] ) ) {
-		$name .= strtolower( htmlspecialchars( $person['gsx$lastname']['$t'] ) );
+	if ( !empty( $person->lastname ) ) {
+		$name .= strtolower(  $person->lastname );
 	}
 	return $name . "'></a>";
 }
 
 function addName( $person ) {
 	$name = "<h3>";
-	if ( !empty( $person['gsx$firstname']['$t'] ) ) {
-		$name .= $person['gsx$firstname']['$t'] . " ";
+	if ( !empty( $person->firstname ) ) {
+		$name .= $person->firstname . " ";
 	}
-	if ( !empty( $person['gsx$nicknames']['$t'] ) ) {
-		$name .= "'" . $person['gsx$nicknames']['$t'] . "' ";
+	if ( !empty( $person->nicknames ) ) {
+		$name .= "'" . $person->nicknames . "' ";
 	}
-	if ( !empty( $person['gsx$lastname']['$t'] ) ) {
-		$name .= $person['gsx$lastname']['$t'];
+	if ( !empty( $person->lastname ) ) {
+		$name .= $person->lastname;
 	}
 	return $name . "</h3>";
 }
 
 function addPhoto( $person ) {
-	$photoURL = $person['gsx$photourl']['$t'];
+	$photoURL = $person->photourl;
 	if ( empty( $photoURL ) ) {
 		return "<img class='directoryPhoto' src='http://gamedevlou.org/wp-content/uploads/2015/02/nophoto.png'></img>";
 	}
 	$name = "";
-	if ( !empty( $person['gsx$firstname']['$t'] ) ) {
-		$name .= $person['gsx$firstname']['$t'] . " ";
+	if ( !empty( $person->firstname ) ) {
+		$name .= $person->firstname . " ";
 	}
-	if ( !empty( $person['gsx$lastname']['$t'] ) ) {
-		$name .= $person['gsx$lastname']['$t'];
+	if ( !empty( $person->lastname ) ) {
+		$name .= $person->lastname;
 	}
 	$location = "";
-	if ( !empty( $person['gsx$location']['$t'] ) ) {
-		$location .= $person['gsx$location']['$t'];
+	if ( !empty( $person->location ) ) {
+		$location .= $person->location;
 	}
-	return "<img class='directoryPhoto' src='" . htmlspecialchars($photoURL) . "' alt='". htmlspecialchars($name) ." - independant game developer - " . htmlspecialchars($location) . "'></img>";
+	return "<img class='directoryPhoto' src='" . $photoURL . "' alt='". $name ." - independant game developer - " . $location . "'></img>";
 }
 
 function addField( $person, $name, $field ) {
-	$field = $person['gsx$' . $field]['$t'];
+	$field = $person->$field;
 	if ( empty( $field ) ) {
 		return "";
 	}
-	return "<p><strong>" . htmlspecialchars($name) . ": </strong>" . htmlspecialchars($field) . "</a></p>";
+	return "<p><strong>" . $name . ": </strong>" . $field . "</a></p>";
 }
 
 function addStudio( $person ) {
-	$studio = $person['gsx$studio']['$t'];
-	$studiolink = $person['gsx$studiolink']['$t'];
+	$studio = $person->studio;
+	$studiolink = $person->studiolink;
 	if ( empty( $studio ) ) {
 		return "";
 	}
 	if ( empty( $studiolink ) ) {
-		return "<p><strong>Studio: </strong>" . htmlspecialchars($studio) . "</p>";
+		return "<p><strong>Studio: </strong>" . $studio . "</p>";
 	}
-	return "<p><strong>Studio: </strong><a href='" . htmlspecialchars($studiolink) . "'>" . htmlspecialchars($studio) ."</a></p>";
+	return "<p><strong>Studio: </strong><a href='" . $studiolink . "'>" . $studio ."</a></p>";
 }
 
 function addEmail( $person ) {
-	$email = $person['gsx$email']['$t'];
-	if ( empty( $email ) ) {
+	if ( empty( $person->email ) ) {
 		return "";
 	}
-	return "<a href='mailto:" . htmlspecialchars($email) . "'><i class='fa fa-envelope'></i></a>";
+	return "<a href='mailto:" . $person->email . "'><i class='fa fa-envelope'></i></a>";
 }
 
 function addWebsite( $person ) {
-	$website = $person['gsx$website']['$t'];
-	if ( empty( $website ) ) {
+	if ( empty( $person->website ) ) {
 		return "";
 	}
-	return "<p><strong>Website: </strong><a href='" . htmlspecialchars($website) . "'>" . htmlspecialchars($website) ."</a></p>";
+	return "<p><strong>Website: </strong><a href='" . $person->website . "'>" . $person->website ."</a></p>";
 }
 
 function addTwitter( $person ) {
-	$twitterId = $person['gsx$twitter']['$t'];
-	if ( empty( $twitterId ) ) {
+	if ( empty( $person->twitter ) ) {
 		return "";
 	}
-	return "<a href='https://twitter.com/" . htmlspecialchars($twitterId) . "'><i class='fa fa-twitter'></i></a>";
+	return "<a href='https://twitter.com/" . $person->twitter . "'><i class='fa fa-twitter'></i></a>";
 }
 
 function addTumblr( $person ) {
-	$tumblrId = $person['gsx$tumblr']['$t'];
-	if ( empty( $tumblrId ) ) {
+	if ( empty( $person->tumblr ) ) {
 		return "";
 	}
-	return "<a href='http://" . htmlspecialchars($tumblrId) . ".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
+	return "<a href='http://" . $person->tumblr . ".tumblr.com/'><i class='fa fa-tumblr'></i></a>";
 }
 
 function addGithub( $person ) {
-	$githubId = $person['gsx$github']['$t'];
-	if ( empty( $githubId ) ) {
+	if ( empty( $person->github ) ) {
 		return "";
 	}
-	return "<a href='http://github.com/" . htmlspecialchars($githubId) . "'><i class='fa fa-github'></i></a>";
+	return "<a href='http://github.com/" . $person->github . "'><i class='fa fa-github'></i></a>";
 }
 
 function addGooglePlus( $person ) {
-	$googleplusId = $person['gsx$googleplus']['$t'];
-	if ( empty( $googleplusId ) ) {
+	if ( empty( $person->googleplus ) ) {
 		return "";
 	}
-	return "<a href='http://googleplus.com/" . htmlspecialchars($googleplusId) . "'><i class='fa fa-googleplus'></i></a>";
+	return "<a href='http://googleplus.com/" . $person->googleplus . "'><i class='fa fa-googleplus'></i></a>";
 }
 
 function addSteam( $person ) {
-	$steamId = $person['gsx$steam']['$t'];
-	if ( empty( $steamId ) ) {
+	if ( empty( $person->steam ) ) {
 		return "";
 	}
-	return "<a href='http://steamcommunity.com/id/" . htmlspecialchars($steamId) . "'><i class='fa fa-steam'></i></a>";
+	return "<a href='http://steamcommunity.com/id/" . $person->steam . "'><i class='fa fa-steam'></i></a>";
 }
 
-$badgeData = (object) array(
-	'ggj14' => (object) array(
-		'name' => 'ggj14',
-		'link' => 'ggj14link',
-		'description' => ' - Global Game Jam - 2014 - We dont see things as they are, we see them as we are.',
-		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj14.png'
-	),
-	'ld29' => (object) array(
-		'name' => 'ld29',
-		'link' => 'ld29link',
-		'description' => ' - Ludum Dare 29 - April 2014	- Beneath the surface',
-		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld29.png'
-	),
-	'ld30' => (object) array(
-		'name' => 'ld30',
-		'link' => 'ld30link',
-		'description' => ' - Ludum Dare 30 - August 2014 - Connected Worlds',
-		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld30.png'
-	),
-	'ld31' => (object) array(
-		'name' => 'ld31',
-		'link' => 'ld31link',
-		'description' => ' - Ludum Dare 31 - December 2014 - Entire Game on One Screen!',
-		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ld31.png'
-	),
-	'ggj15' => (object) array(
-		'name' => 'ggj15',
-		'link' => 'ggj15link',
-		'description' => ' - Global Game Jam - 2015 - What do we do now?',
-		'image' => 'http://gamedevlou.org/wp-content/uploads/2015/02/badge-ggj15.png'
-	)
-);
-
-function addBadges( $person, $data ) {
+function addBadges( $person, $jams ) {
 	$badges = "<div class='badges'>";
 
-	foreach ( $data as $badge ) {
-		$gameName = $person['gsx$' . $badge->name]['$t'];
-		$gameName = str_replace("'", "&rsquo;", $gameName);
-		$gameLink = $person['gsx$' . $badge->link]['$t'];
-		if ( !empty( $person['gsx$' . $badge->name]['$t'] ) ) {
-			$badgeHTML = "<img class='badge' src='" . $badge->image . "' alt='" . htmlspecialchars($gameName) . $badge->description . "' title='" . $gameName . $badge->description . "'/>";
+	foreach ( $jams as $jam ) {
+		$jamName = str_replace('#', '', strtolower($jam->hashtag));
+
+		if( !empty ( $person->$jamName ) ){
+
+			$jamGame = $person->$jamName;
+			$jamLink = $jamName . "link";
+			$gameLink = $person->$jamLink;
+
+			$description = $jamGame . " - " . $jam->name . " - " . $jam->month . " - " . $jam->year . " - " . $jam->theme;
+
+			$badgeHTML = "<img class='badge' src='" . $jam->image . "'  alt='" . $description . "' title='" . $description . "'/>";
 			if ( !empty( $gameLink ) ) {
-				$badges .= "<a href='". htmlspecialchars($gameLink) . "' target='_blank'>";
+				$badges .= "<a href='".  $gameLink  . "' target='_blank'>";
 				$badges .= $badgeHTML;
 				$badges .= "</a>";
 			}else {
 				$badges .= $badgeHTML;
 			}
 		}
-	};
-
+	}
 	return $badges .= "</div>";
 }
 
 function displayContactPeople( $people ) {
 	$contactPeople = "";
 	foreach ( $people as $person ) {
-		if ( $person['gsx$showonsite']['$t'] == "TRUE"
-			&& $person['gsx$cancontact']['$t'] == "TRUE"
-			&& !empty( $person['gsx$email']['$t'] ) ) {
-			$contactPeople .= "<a href='mailto:".$person['gsx$email']['$t']."' target='_blank'>".$person['gsx$firstname']['$t']."</a>, ";
+		if ( $person->showonsite == "TRUE"
+			&& $person->cancontact == "TRUE"
+			&& !empty( $person->email ) ) {
+			$contactPeople .= "<a href='mailto:" . $person->email . "' target='_blank'>" . $person->firstname . "</a>, ";
 		}
 	}
 	return $contactPeople;
@@ -237,14 +234,14 @@ function displayContactPeople( $people ) {
 
 ?>
 
-<h3><?php echo countPeople( $people ); ?> Independant Game Developers!</h3>
+<h3><?php echo countPeople( $peopleModel ); ?> Independant Game Developers!</h3>
 
 <h1>New, or have questions?</h1>
-<p>Contact <?php echo displayContactPeople( $people ); ?> and we can help you out!</p>
+<p>Contact <?php echo displayContactPeople( $peopleModel ); ?> and we can help you out!</p>
 
 <div class="directoryPage">
 	<h3>Members:</h3>
-	<?php echo displayPeople( $people, $badgeData ); ?>
+	<?php echo displayPeople( $peopleModel, $jamsModel ); ?>
 </div>
 
 
@@ -252,7 +249,7 @@ function displayContactPeople( $people ) {
 	* {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
-		box-sizing: border-box; 
+		box-sizing: border-box;
 	}
 
 	.person {
