@@ -131,3 +131,5 @@ sh build.sh
 ```
 this will replace the "<?php" and "?>" tags with "[insert_php]" and "[/insert_php]" tags required by Insert PHP plugin
 ritten in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
+
+From here you can copy the contents of directory-wp.php and paste it into a regular wordpress page, the Insert PHP plugin will run the code on the server before the page loads.
