@@ -69,6 +69,38 @@ so in the JSON example above my columns are "gsx$name", "gsx$hashtag", "gsx$mont
 
 All of the relevant data is nested inside "feed" then inside "entry"
 so I built a function that gets the json from the URL and returns a PHP object of just the "entry" data nested inside.
+
+Here are the googleSheetData and CreateModel functions:
+```php
+function googleSheetData( $docId ) {
+	$url = "http://spreadsheets.google.com/feeds/list/" . $docId . "/od6/public/values?alt=json&amp;callback=displayContent";
+	try {
+		$json = file_get_contents( $url );
+	} catch ( Exception $e ) {
+		echo " I AM ERROR <br>";
+		echo $e;
+		return;
+	}
+	$data = json_decode( $json, TRUE );
+	return $data['feed']['entry'];
+}
+
+function createModel( $table ) {
+	$model = array();
+	foreach ( $table as $row ) {
+		$newItem = new stdClass;
+		foreach ( $row as $key => $value ) {
+			if ( strpos( $key, 'gsx$' ) !== FALSE ) {
+				$fieldName = str_replace( 'gsx$', '', $key );
+				$content = htmlspecialchars( str_replace( "'", "", $value['$t'] ) );
+				$newItem->$fieldName = $content;
+			}
+		}
+		array_push( $model, $newItem );
+	}
+	return $model;
+}
+```
 Then I use the "createModel" function to reformat the data into eisier to use structure like this:
 ```php
 Array
